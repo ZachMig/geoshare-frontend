@@ -1,6 +1,7 @@
 import './App.css'
-import Account from './components/Account.tsx';
-import Login from './components/Login.tsx'
+import Account from "./components/Account.tsx";
+import Login from "./components/Login.tsx";
+import My from "./components/My.tsx";
 
 import {
   Routes,
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/login" element = {<Login />} />
         <Route path="/account" element = {<Account />} />
+        <Route path="/my" element = {<My />} />
       </Routes>
     </>
   )
