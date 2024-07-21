@@ -13,6 +13,9 @@ const Navbar = () => {
       <Link className={styles.navlink} to="/account">
         My Account
       </Link>
+      <Link className={styles.navlink} to="/login">
+        Login / Create Account
+      </Link>
     </div>
   );
 };

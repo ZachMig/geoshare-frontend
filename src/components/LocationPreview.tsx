@@ -1,5 +1,6 @@
 import { Location } from "../types.ts";
 import * as testOne from "../assets/sv_test_one.png";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface LocationPreviewProps {
   location: Location;
@@ -17,8 +18,8 @@ const LocationPreview = ({ location }: LocationPreviewProps) => {
       <h4>Preview</h4>
       <p>{location.description}</p>
       <iframe
-        width="100%"
-        height="450"
+        width="640"
+        height="640"
         style={{ border: 0 }}
         loading="lazy"
         allowFullScreen
