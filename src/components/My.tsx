@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Data, List, Location } from "../types";
+import { Country, Data, List, Location, Meta } from "../types";
 import axios from "axios";
 import Lists from "./Lists";
 import Locations from "./Locations";
@@ -13,23 +13,51 @@ const My = () => {
     null
   );
   const [loading, setLoading] = useState(true);
+  const [metas, setMetas] = useState<Meta[] | null>(null);
+  const [countries, setCountries] = useState<Country[] | null>(null);
 
-  const baseUrl = "http://localhost:8080";
+  const baseUrl = "http://localhost:8080/api";
   const username = localStorage.getItem("username");
 
-  useEffect(() => {
-    const url = `${baseUrl}/api/lists/findformatted?uname=${username}`;
-    console.log(`Pinging ${url}`);
+  const callAPI = async () => {
     const config = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
     };
 
-    axios.get(url, config).then(function (response) {
-      setData(response.data);
-      setLoading(false);
-    });
+    try {
+      const [countryResponse, metaResponse, dataResponse] = await Promise.all([
+        axios.get(`${baseUrl}/countries/findall`, config),
+        axios.get(`${baseUrl}/metas/findall`, config),
+        axios.get(`${baseUrl}/lists/findformatted?uname=${username}`, config),
+      ]);
+      const fetchedCOuntries = countryResponse.data;
+      const fetchedMetas = metaResponse.data;
+      const fetchedData = dataResponse.data;
+
+      setData(fetchedData);
+      setCountries(fetchedCOuntries);
+      setMetas(fetchedMetas);
+
+      //Set default selected List
+      if (fetchedData.unlisted.locations.length > 0) {
+        setSelectedList(fetchedData.unlisted);
+      } else if (
+        fetchedData.listed &&
+        fetchedData.listed[0].locations.length > 0
+      ) {
+        setSelectedList(fetchedData.listed[0]);
+      }
+    } catch (error) {
+      console.error("Error with initial Country/Meta/List API calls: ", error);
+    }
+
+    setLoading(false); //Handle this better
+  };
+
+  useEffect(() => {
+    callAPI();
   }, []);
 
   if (loading) {
@@ -37,15 +65,17 @@ const My = () => {
   }
 
   return (
-    <div className="container-fluid mt-5">
-      <div className="row">
+    <div className="container-fluid mt-5 vh-95">
+      <div className="row vh-75">
         <div className="col-md-3">
           {data && <Lists data={data} onSelectList={setSelectedList} />}
         </div>
         <div className="col-md-4">
-          {selectedList && (
+          {selectedList && metas && countries && (
             <Locations
               list={selectedList}
+              metas={metas}
+              countries={countries}
               onSelectLocation={setSelectedLocation}
             />
           )}
