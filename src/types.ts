@@ -1,10 +1,6 @@
-export interface Location {
-  id: number;
-  url: string;
-  description: string;
-  country: string;
-  userID: number;
-  meta: string;
+export interface Data {
+  unlisted: List;
+  listed: List[];
 }
 
 export interface List {
@@ -15,9 +11,13 @@ export interface List {
   locations: Location[];
 }
 
-export interface Data {
-  unlisted: List;
-  listed: List[];
+export interface Location {
+  id: number;
+  url: string;
+  description: string;
+  countryName: string;
+  userID: number;
+  meta: string;
 }
 
 export interface Meta {
