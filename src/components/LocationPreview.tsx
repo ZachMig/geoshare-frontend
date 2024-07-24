@@ -1,7 +1,6 @@
 import { Location } from "../types.ts";
 import * as testOne from "../assets/sv_test_one.png";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
 
 interface LocationPreviewProps {
   location: Location;
@@ -27,8 +26,9 @@ const LocationPreview = ({ location }: LocationPreviewProps) => {
         <p className="col-2">Meta: {location.meta}</p>
       </div>
       <iframe
-        width="640"
-        height="640"
+        className="mx-auto"
+        width="660"
+        height="500"
         style={{ border: 0 }}
         loading="lazy"
         allowFullScreen
