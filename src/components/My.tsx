@@ -5,6 +5,7 @@ import Lists from "./Lists";
 import Locations from "./Locations";
 import LocationPreview from "./LocationPreview";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CreateLocation from "./CreateLocation";
 
 const My = () => {
   const [data, setData] = useState<Data | null>(null);
@@ -65,8 +66,8 @@ const My = () => {
   }
 
   return (
-    <div className="container-fluid mt-5 vh-95">
-      <div className="row vh-75">
+    <div className="container-fluid mt-5 h-100">
+      <div className="row">
         <div className="col-md-3">
           {data && <Lists data={data} onSelectList={setSelectedList} />}
         </div>
@@ -82,6 +83,14 @@ const My = () => {
         </div>
         <div className="col-md-5">
           {selectedLocation && <LocationPreview location={selectedLocation} />}
+        </div>
+      </div>
+      <div className="row mt-5">
+        <div className="col-md-3">LIST CRUD</div>
+        <div className="col-md-4">
+          {countries && metas && (
+            <CreateLocation countries={countries} metas={metas} />
+          )}
         </div>
       </div>
     </div>

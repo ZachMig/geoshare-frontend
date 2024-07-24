@@ -16,6 +16,7 @@ interface Filter {
   meta: string;
 }
 
+//COMPONENT
 const Locations = ({
   list,
   metas,
@@ -64,7 +65,6 @@ const Locations = ({
         ? location.meta.toLowerCase() === filters.meta.toLowerCase()
         : true;
 
-      console.log(nameMatches + " " + countryMatches + " " + metaMatches);
       return nameMatches && countryMatches && metaMatches;
     }
   );
