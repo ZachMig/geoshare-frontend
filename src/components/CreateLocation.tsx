@@ -44,6 +44,12 @@ const CreateLocation = ({
       : true;
   });
 
+  const filteredMetas = metaNames.filter((name) => {
+    return metaFilter
+      ? name.toLowerCase().includes(metaFilter.toLowerCase())
+      : true;
+  });
+
   const openCountryDropdown = () => {
     setCountryDropdownOpen(!countryDropdownOpen);
   };
@@ -60,6 +66,7 @@ const CreateLocation = ({
 
   const handleMetaSelect = (meta: string) => {
     setLocInfo({ ...locInfo, meta: meta });
+    setMetaFilter(meta);
     setMetaDropdownOpen(false);
   };
 
@@ -69,17 +76,22 @@ const CreateLocation = ({
     setLocInfo({ ...locInfo, countryName: e.target.value });
   };
 
+  const handleMetaChange = (e: any) => {
+    setMetaFilter(e.target.value);
+    setMetaDropdownOpen(true);
+    setLocInfo({ ...locInfo, meta: e.target.value });
+  };
+
+  //Submit New Location
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!countryNamesLower.includes(locInfo.countryName.toLowerCase())) {
       setSubmitResponse("Please enter a valid country.");
-      console.log("HELLO 1");
       return;
     }
 
     if (!metaNamesLower.includes(locInfo.meta.toLowerCase())) {
       setSubmitResponse("Please enter a valid meta.");
-      console.log("HELLO 2");
       return;
     }
 
@@ -94,11 +106,7 @@ const CreateLocation = ({
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/locations/create",
-        locInfo,
-        config
-      );
+      const response = await axios.post(url, locInfo, config);
       console.log("Create location response: " + response.data);
       setSubmitResponse("Create location response: " + response.data);
       setLocInfo({
@@ -117,6 +125,7 @@ const CreateLocation = ({
     }
   };
 
+  //Return TSX
   return (
     <div>
       <span>{submitResponse}</span>
@@ -182,22 +191,23 @@ const CreateLocation = ({
               Meta
             </label>
             <input
+              type="text"
               id="meta"
               className="form-control"
               placeholder={metas[0].name}
-              readOnly
               onClick={openMetaDropdown}
-              value={locInfo.meta}
+              onChange={handleMetaChange}
+              value={metaFilter}
             />
             {metaDropdownOpen && (
               <ul className="list-group dropdown-menu show">
-                {metas.map((meta) => (
+                {filteredMetas.map((meta) => (
                   <li
-                    key={meta.id}
+                    key={meta}
                     className="list-group-item list-group-item-action"
-                    onClick={() => handleMetaSelect(meta.name)}
+                    onClick={() => handleMetaSelect(meta)}
                   >
-                    {meta.name}
+                    {meta}
                   </li>
                 ))}
               </ul>
