@@ -64,8 +64,9 @@ function Login() {
       });
 
       if (response.status === 200) {
-        const jwt = response.data;
+        const { jwt, userID } = response.data;
         localStorage.setItem("jwt", jwt);
+        localStorage.setItem("userID", userID);
         localStorage.setItem("username", username);
         console.log("User logged in successfully.");
       }
