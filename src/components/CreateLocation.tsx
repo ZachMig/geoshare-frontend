@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Country, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 interface CreateLocationProps {
+  refreshView: () => void;
   countries: Country[];
   metas: Meta[];
 }
@@ -11,13 +13,30 @@ interface CreateLocationProps {
 //NEW DROPDOWN IS STILL BUGGED AFTER SELECT DOESNT POPULATE OR SOMETHING
 
 //COMPONENT
-const CreateLocation = ({ countries, metas }: CreateLocationProps) => {
+const CreateLocation = ({
+  refreshView,
+  countries,
+  metas,
+}: CreateLocationProps) => {
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
   const [countryFilter, setCountryFilter] = useState("");
   const [metaFilter, setMetaFilter] = useState("");
+  const [submitResponse, setSubmitResponse] = useState("");
+  const [locInfo, setLocInfo] = useState({
+    url: "",
+    description: "",
+    countryName: "",
+    meta: "",
+    userID: localStorage.getItem("userID"),
+  });
 
+  const metaNames: string[] = metas.map((meta) => meta.name);
+  const metaNamesLower: string[] = metaNames.map((name) => name.toLowerCase());
   const countryNames: string[] = countries.map((country) => country.name);
+  const countryNamesLower: string[] = countryNames.map((name) =>
+    name.toLowerCase()
+  );
 
   const filteredCountries = countryNames.filter((name) => {
     return countryFilter
@@ -34,7 +53,7 @@ const CreateLocation = ({ countries, metas }: CreateLocationProps) => {
   };
 
   const handleCountrySelect = (country: string) => {
-    setLocInfo({ ...locInfo, country: country });
+    setLocInfo({ ...locInfo, countryName: country });
     setCountryFilter(country);
     setCountryDropdownOpen(false);
   };
@@ -44,19 +63,63 @@ const CreateLocation = ({ countries, metas }: CreateLocationProps) => {
     setMetaDropdownOpen(false);
   };
 
-  const [locInfo, setLocInfo] = useState({
-    url: "",
-    desc: "",
-    country: "",
-    meta: "",
-  });
+  const handleCountryChange = (e: any) => {
+    setCountryFilter(e.target.value);
+    setCountryDropdownOpen(true);
+    setLocInfo({ ...locInfo, countryName: e.target.value });
+  };
 
-  const handleSubmit = () => {
-    //API CALL CREATE
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (!countryNamesLower.includes(locInfo.countryName.toLowerCase())) {
+      setSubmitResponse("Please enter a valid country.");
+      console.log("HELLO 1");
+      return;
+    }
+
+    if (!metaNamesLower.includes(locInfo.meta.toLowerCase())) {
+      setSubmitResponse("Please enter a valid meta.");
+      console.log("HELLO 2");
+      return;
+    }
+
+    setSubmitResponse("");
+
+    const url = `http://localhost:8080/api/locations/create`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/locations/create",
+        locInfo,
+        config
+      );
+      console.log("Create location response: " + response.data);
+      setSubmitResponse("Create location response: " + response.data);
+      setLocInfo({
+        ...locInfo,
+        url: "",
+        description: "",
+        countryName: "",
+        meta: "",
+      });
+      setCountryFilter("");
+      setMetaFilter("");
+      refreshView();
+    } catch (error) {
+      console.error("Error creating location: " + error);
+      setSubmitResponse("Error creating location: " + error);
+    }
   };
 
   return (
     <div>
+      <span>{submitResponse}</span>
       <form onSubmit={handleSubmit} className="mt-4 mx-auto">
         <div className="mb-3">
           <label htmlFor="url" className="form-label">
@@ -79,8 +142,10 @@ const CreateLocation = ({ countries, metas }: CreateLocationProps) => {
             type="text"
             className="form-control"
             id="desc"
-            value={locInfo.desc}
-            onChange={(e) => setLocInfo({ ...locInfo, desc: e.target.value })}
+            value={locInfo.description}
+            onChange={(e) =>
+              setLocInfo({ ...locInfo, description: e.target.value })
+            }
             required
           />
         </div>
@@ -95,7 +160,7 @@ const CreateLocation = ({ countries, metas }: CreateLocationProps) => {
               className="form-control"
               placeholder={countries[0].name}
               onClick={openCountryDropdown}
-              onChange={(e) => setCountryFilter(e.target.value)}
+              onChange={handleCountryChange}
               value={countryFilter}
             />
             {countryDropdownOpen && (

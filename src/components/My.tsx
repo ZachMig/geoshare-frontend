@@ -89,7 +89,11 @@ const My = () => {
         <div className="col-md-3">LIST CRUD</div>
         <div className="col-md-4">
           {countries && metas && (
-            <CreateLocation countries={countries} metas={metas} />
+            <CreateLocation
+              refreshView={callAPI}
+              countries={countries}
+              metas={metas}
+            />
           )}
         </div>
       </div>
