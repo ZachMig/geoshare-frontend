@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Country, List, Location, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/Locations.css";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 
 interface LocationsProps {
   list: List;
@@ -148,11 +149,31 @@ const Locations = ({
         {filteredLocations.map((location) => (
           <li
             key={location.id}
-            className="list-group-item list-group-item-action"
+            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+            style={{ cursor: "pointer", position: "relative" }}
             onClick={() => onSelectLocation(location)}
-            style={{ cursor: "pointer" }}
           >
             {location.description}
+            <div className="icon-group">
+              <FaEdit
+                className="icon"
+                onClick={() => console.log("Edit clicked")}
+                title="Edit"
+                style={{ marginLeft: "10px", cursor: "pointer" }}
+              />
+              <FaTrash
+                className="icon"
+                onClick={() => console.log("Delete clicked")}
+                title="Delete"
+                style={{ marginLeft: "10px", cursor: "pointer" }}
+              />
+              <FaPlus
+                className="icon"
+                onClick={() => console.log("Add to list clicked")}
+                title="Add to list"
+                style={{ marginLeft: "10px", cursor: "pointer" }}
+              />
+            </div>
           </li>
         ))}
       </ul>
