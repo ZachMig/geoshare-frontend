@@ -4,9 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
 interface CreateLocationProps {
-  refreshView: () => void;
   countries: Country[];
   metas: Meta[];
+  refreshData: () => {};
 }
 
 //TODO
@@ -14,15 +14,16 @@ interface CreateLocationProps {
 
 //COMPONENT
 const CreateLocation = ({
-  refreshView,
   countries,
   metas,
+  refreshData,
 }: CreateLocationProps) => {
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
   const [countryFilter, setCountryFilter] = useState("");
   const [metaFilter, setMetaFilter] = useState("");
   const [submitResponse, setSubmitResponse] = useState("");
+  const [newLocLists, setNewLocLists] = useState<number[]>([]);
   const [locInfo, setLocInfo] = useState({
     url: "",
     description: "",
@@ -118,7 +119,7 @@ const CreateLocation = ({
       });
       setCountryFilter("");
       setMetaFilter("");
-      refreshView();
+      refreshData();
     } catch (error) {
       console.error("Error creating location: " + error);
       setSubmitResponse("Error creating location: " + error);
@@ -214,7 +215,7 @@ const CreateLocation = ({
             )}
           </div>
         </div>
-        <button type="submit" className="btn btn-primary w-100">
+        <button type="submit" className="btn btn-primary w-100 mt-3">
           Add Location
         </button>
       </form>
