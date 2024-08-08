@@ -7,6 +7,9 @@ const Navbar = () => {
       <Link className={styles.navlink} to="/my">
         My Locations
       </Link>
+      <Link className={styles.navlink} to="/manage">
+        Manage Locations
+      </Link>
       <Link className={styles.navlink} to="/search">
         Everyone Else's Locations
       </Link>

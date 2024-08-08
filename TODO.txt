@@ -1,0 +1,7 @@
+currently working on:
+
+when creating location, include lists it will be part of 
+
+-> 
+
+change backend to support add one loc to many lists with one api call
