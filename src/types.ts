@@ -1,8 +1,3 @@
-export interface Data {
-  unlisted: List;
-  listed: List[];
-}
-
 export interface List {
   id: number;
   name: string;

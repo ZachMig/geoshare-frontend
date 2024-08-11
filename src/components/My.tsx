@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Country, Data, List, Location, Meta } from "../types";
+import { Country, List, Location, Meta } from "../types";
 import axios from "axios";
 import Lists from "./Lists";
 import Locations from "./Locations";
@@ -9,20 +9,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 interface MyProps {
   countries: Country[];
   metas: Meta[];
-  data: Data | null;
-  setData: React.Dispatch<React.SetStateAction<Data | null>>;
+  myLists: List[] | null;
+  setMyLists: React.Dispatch<React.SetStateAction<List[] | null>>;
 }
 
 //COMPONENT
-const My = ({ countries, metas, data, setData }: MyProps) => {
-  //const [data, setData] = useState<Data | null>(null);
+const My = ({ countries, metas, myLists, setMyLists }: MyProps) => {
   const [selectedList, setSelectedList] = useState<List | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
 
   //FETCH LISTS
-  const callAPI = async () => {
+  const getUserLL = async () => {
     const username = localStorage.getItem("username");
     const config = {
       headers: {
@@ -31,23 +30,24 @@ const My = ({ countries, metas, data, setData }: MyProps) => {
     };
 
     try {
-      const dataResponse = await axios.get(
+      const response = await axios.get(
         `http://localhost:8080/api/lists/findformatted?uname=${username}`,
         config
       );
 
-      const fetchedData: Data = dataResponse.data;
+      const fetchedLists: List[] = response.data;
+      setMyLists(fetchedLists);
 
-      setData(fetchedData);
+      //Find first list with any locations and set it as the default displayed
+      const firstPopulatedList = fetchedLists.find(
+        (list) => list.locations.length > 0
+      );
 
-      //Set default selected List
-      if (fetchedData.unlisted.locations.length > 0) {
-        setSelectedList(fetchedData.unlisted);
-      } else if (
-        fetchedData.listed &&
-        fetchedData.listed[0].locations.length > 0
-      ) {
-        setSelectedList(fetchedData.listed[0]);
+      if (firstPopulatedList) {
+        setSelectedList(firstPopulatedList);
+      } else {
+        //User has no lists or locations
+        //TODO do something idk yet
       }
     } catch (error) {
       console.error("Error with initial List API call: ", error);
@@ -56,10 +56,10 @@ const My = ({ countries, metas, data, setData }: MyProps) => {
 
   //USEEFFECT STUB
   useEffect(() => {
-    callAPI();
+    getUserLL();
   }, []);
 
-  if (!data) {
+  if (!myLists) {
     return <div>LOADING</div>;
   }
 
@@ -68,7 +68,9 @@ const My = ({ countries, metas, data, setData }: MyProps) => {
     <div className="container-fluid mt-5 h-100">
       <div className="row">
         <div className="col-md-3">
-          {data && <Lists data={data} onSelectList={setSelectedList} />}
+          {myLists && (
+            <Lists myLists={myLists} onSelectList={setSelectedList} />
+          )}
         </div>
         <div className="col-md-4">
           {selectedList && metas && countries && (
