@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Country, Meta } from "../types";
+import { Country, List, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
 interface CreateLocationProps {
   countries: Country[];
   metas: Meta[];
+  myLocations: Location[];
+  myLists: List[];
   refreshData: () => {};
 }
 
