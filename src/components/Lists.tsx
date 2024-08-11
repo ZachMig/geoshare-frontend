@@ -1,24 +1,16 @@
-import { List, Data } from "../types";
+import { List } from "../types";
 
 interface ListsProps {
-  data: Data;
+  myLists: List[];
   onSelectList: (list: List) => void;
 }
 
-const Lists = ({ data, onSelectList }: ListsProps) => {
+const Lists = ({ myLists, onSelectList }: ListsProps) => {
   return (
     <div>
       <h4>Lists</h4>
       <ul className="list-group">
-        <li
-          key={data.unlisted.id}
-          className="list-group-item list-group-item-action"
-          onClick={() => onSelectList(data.unlisted)}
-          style={{ cursor: "pointer" }}
-        >
-          {data.unlisted.name}
-        </li>
-        {data.listed.map((list) => (
+        {myLists.map((list) => (
           <li
             key={list.id}
             className="list-group-item list-group-item-action"

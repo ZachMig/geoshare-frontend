@@ -6,8 +6,7 @@ import axios from "axios";
 interface CreateLocationProps {
   countries: Country[];
   metas: Meta[];
-  myLocations: Location[];
-  myLists: List[];
+  myLists: List[] | null;
   refreshData: () => {};
 }
 
@@ -18,6 +17,7 @@ interface CreateLocationProps {
 const CreateLocation = ({
   countries,
   metas,
+  myLists,
   refreshData,
 }: CreateLocationProps) => {
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
@@ -25,13 +25,21 @@ const CreateLocation = ({
   const [countryFilter, setCountryFilter] = useState("");
   const [metaFilter, setMetaFilter] = useState("");
   const [submitResponse, setSubmitResponse] = useState("");
-  const [newLocLists, setNewLocLists] = useState<number[]>([]);
-  const [locInfo, setLocInfo] = useState({
+  const [listsToAdd, setListsToAdd] = useState(new Set());
+  const [locInfo, setLocInfo] = useState<{
+    url: string;
+    description: string;
+    countryName: string;
+    meta: string;
+    userID: string | null;
+    listIDs: number[];
+  }>({
     url: "",
     description: "",
     countryName: "",
     meta: "",
     userID: localStorage.getItem("userID"),
+    listIDs: [],
   });
 
   const metaNames: string[] = metas.map((meta) => meta.name);
@@ -85,6 +93,18 @@ const CreateLocation = ({
     setLocInfo({ ...locInfo, meta: e.target.value });
   };
 
+  //Add the selected list to be included to lists this location
+  // will be added to upon creation
+  const handleListClick = (id: number) => {
+    const temp = new Set(listsToAdd);
+    if (temp.has(id)) {
+      temp.delete(id);
+    } else {
+      temp.add(id);
+    }
+    setListsToAdd(temp);
+  };
+
   //Submit New Location
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -108,10 +128,16 @@ const CreateLocation = ({
       },
     };
 
+    locInfo.listIDs = Array.from(listsToAdd) as number[];
+
+    console.log("LocInfo: " + locInfo);
+
     try {
       const response = await axios.post(url, locInfo, config);
       console.log("Create location response: " + response.data);
       setSubmitResponse("Create location response: " + response.data);
+
+      //Reset all input fields
       setLocInfo({
         ...locInfo,
         url: "",
@@ -119,6 +145,7 @@ const CreateLocation = ({
         countryName: "",
         meta: "",
       });
+      setListsToAdd(new Set());
       setCountryFilter("");
       setMetaFilter("");
       refreshData();
@@ -216,6 +243,22 @@ const CreateLocation = ({
               </ul>
             )}
           </div>
+        </div>
+        <div className="mt-3" style={{ maxHeight: "500px", overflowY: "auto" }}>
+          <ul className="list-group">
+            {myLists &&
+              myLists.map((list) => (
+                <li
+                  key={list.id}
+                  className={`list-group-item list-group-item-action
+                  ${listsToAdd.has(list.id) ? "active" : ""}`}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleListClick(list.id)}
+                >
+                  {list.name}
+                </li>
+              ))}
+          </ul>
         </div>
         <button type="submit" className="btn btn-primary w-100 mt-3">
           Add Location

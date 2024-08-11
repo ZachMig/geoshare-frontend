@@ -4,18 +4,11 @@ import CreateLocation from "./CreateLocation";
 interface ManageProps {
   countries: Country[];
   metas: Meta[];
-  myLists: List[];
-  myLocations: Location[];
+  myLists: List[] | null;
   refreshData: () => {};
 }
 
-const Manage = ({
-  countries,
-  metas,
-  myLists,
-  myLocations,
-  refreshData,
-}: ManageProps) => {
+const Manage = ({ countries, metas, myLists, refreshData }: ManageProps) => {
   return (
     <div className="row mt-5">
       <div className="col-4">Col</div>
@@ -24,7 +17,6 @@ const Manage = ({
           countries={countries}
           metas={metas}
           myLists={myLists}
-          myLocations={myLocations}
           refreshData={refreshData}
         />
       </div>
