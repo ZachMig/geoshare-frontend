@@ -7,7 +7,7 @@ interface CreateLocationProps {
   countries: Country[];
   metas: Meta[];
   myLists: List[] | null;
-  refreshData: () => {};
+  fetchLists: () => {};
 }
 
 //TODO
@@ -18,7 +18,7 @@ const CreateLocation = ({
   countries,
   metas,
   myLists,
-  refreshData,
+  fetchLists,
 }: CreateLocationProps) => {
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
@@ -148,7 +148,7 @@ const CreateLocation = ({
       setListsToAdd(new Set());
       setCountryFilter("");
       setMetaFilter("");
-      refreshData();
+      fetchLists();
     } catch (error) {
       console.error("Error creating location: " + error);
       setSubmitResponse("Error creating location: " + error);
@@ -159,8 +159,9 @@ const CreateLocation = ({
   return (
     <div>
       <span>{submitResponse}</span>
-      <form onSubmit={handleSubmit} className="mt-4 mx-auto">
-        <div className="mb-3">
+      <form onSubmit={handleSubmit} className="mt-3 mx-auto">
+        {/*Url*/}
+        <div className="mt-2">
           <label htmlFor="url" className="form-label">
             Street View URL
           </label>
@@ -168,12 +169,14 @@ const CreateLocation = ({
             type="text"
             className="form-control"
             id="url"
+            placeholder="google.com/maps/~"
             value={locInfo.url}
             onChange={(e) => setLocInfo({ ...locInfo, url: e.target.value })}
             required
           />
         </div>
-        <div className="mb-3">
+        {/*Description*/}
+        <div className="mt-2">
           <label htmlFor="desc" className="form-label">
             Description
           </label>
@@ -181,6 +184,7 @@ const CreateLocation = ({
             type="text"
             className="form-control"
             id="desc"
+            placeholder="Typical east nusa round..."
             value={locInfo.description}
             onChange={(e) =>
               setLocInfo({ ...locInfo, description: e.target.value })
@@ -188,7 +192,8 @@ const CreateLocation = ({
             required
           />
         </div>
-        <div className="row">
+        {/*Country*/}
+        <div className="row mt-2">
           <div className="dropdown col-sm mx-1">
             <label htmlFor="country" className="form-label">
               Country
@@ -216,6 +221,7 @@ const CreateLocation = ({
               </ul>
             )}
           </div>
+          {/*Meta*/}
           <div className="dropdown col-sm mx-1">
             <label htmlFor="meta" className="form-label">
               Meta
@@ -244,10 +250,11 @@ const CreateLocation = ({
             )}
           </div>
         </div>
-        <div className="mt-3" style={{ maxHeight: "500px", overflowY: "auto" }}>
+        {/*Lists to Include*/}
+        <div className="mt-2" style={{ maxHeight: "220px", overflowY: "auto" }}>
           <ul className="list-group">
             {myLists &&
-              myLists.map((list) => (
+              myLists.slice(1).map((list) => (
                 <li
                   key={list.id}
                   className={`list-group-item list-group-item-action
@@ -255,13 +262,16 @@ const CreateLocation = ({
                   style={{ cursor: "pointer" }}
                   onClick={() => handleListClick(list.id)}
                 >
-                  {list.name}
+                  {list.name.length > 80
+                    ? list.name.slice(0, 80) + "..."
+                    : list.name}
                 </li>
               ))}
           </ul>
         </div>
+        {/*Submit Button*/}
         <button type="submit" className="btn btn-primary w-100 mt-3">
-          Add Location
+          Create New Location
         </button>
       </form>
     </div>

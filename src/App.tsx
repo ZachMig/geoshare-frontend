@@ -1,5 +1,4 @@
 import axios from "axios";
-import "./App.css";
 import Account from "./components/Account.tsx";
 import Login from "./components/Login.tsx";
 import My from "./components/My.tsx";
@@ -13,6 +12,29 @@ function App() {
   const [countries, setCountries] = useState<Country[] | null>(null);
   const [metas, setMetas] = useState<Meta[] | null>(null);
   const [myLists, setMyLists] = useState<List[] | null>(null);
+
+  //FETCH LISTS
+  const fetchLists = async () => {
+    console.log("Fetching fresh lists.");
+    const username = localStorage.getItem("username");
+    const config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    };
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/lists/findformatted?uname=${username}`,
+        config
+      );
+
+      const fetchedLists: List[] = response.data;
+      setMyLists(fetchedLists);
+    } catch (error) {
+      console.error("Error loading user lists: ", error);
+    }
+  };
 
   const fetchCountriesAndMetas = async () => {
     const countryUrl = "http://localhost:8080/api/countries/findall";
@@ -51,7 +73,7 @@ function App() {
               countries={countries}
               metas={metas}
               myLists={myLists}
-              setMyLists={setMyLists}
+              fetchLists={fetchLists}
             />
           }
         />
@@ -62,7 +84,7 @@ function App() {
               countries={countries}
               metas={metas}
               myLists={myLists}
-              refreshData={fetchCountriesAndMetas}
+              fetchLists={fetchLists}
             />
           }
         />

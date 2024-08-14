@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { Country, List, Location, Meta } from "../types";
+import { Country, Location, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/Locations.css";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import axios from "axios";
 
 interface LocationsProps {
-  list: List;
+  locations: Location[];
   metas: Meta[];
   countries: Country[];
   onSelectLocation: (location: Location) => void;
+  fetchLists: () => {};
 }
 
 interface Filter {
@@ -17,12 +19,16 @@ interface Filter {
   meta: string;
 }
 
+//MAKE SURE LOCATION FIELDS ARE NOT NULL OR APP WILL CRASH!!!!
+//MAKE SURE THERE IS ALWAYS A VALID LIST WITH LOCATIONS OR APP WILL CRASH!!!
+
 //COMPONENT
 const Locations = ({
-  list,
+  locations,
   metas,
   countries,
   onSelectLocation,
+  fetchLists,
 }: LocationsProps) => {
   const [filters, setFilters] = useState<Filter>({
     meta: "",
@@ -50,10 +56,32 @@ const Locations = ({
     setMetaDropdownOpen(false);
   };
 
-  //MAKE SURE LOCATION FIELDS ARE NOT NULL OR APP WILL CRASH!!!!
-  //MAKE SURE THERE IS ALWAYS A VALID LIST WITH LOCATIONS OR APP WILL CRASH!!!
-  const filteredLocations: Location[] = list.locations.filter(
+  const handleLocationDelete = async (location: Location) => {
+    //kill it
+    const deleteUrl = "http://localhost:8080/api/locations/delete";
+    try {
+      const response = await axios.delete(deleteUrl, {
+        data: [location.id],
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+      });
+      console.log("Delete request ran with no errors. " + response.data);
+      fetchLists();
+    } catch (error) {
+      console.error(
+        "Error deleting location: " + location.description + " - " + error
+      );
+    }
+  };
+
+  const handleLocationEdit = (location: Location) => {
+    //make an edit popup or something
+  };
+
+  //Maintain the subset of locations that match all current filters
+  const filteredLocations: Location[] = locations.filter(
     (location: Location) => {
+      // If the filter is populated, return true if it matches, otherwise if no match or not populated return false
+      // This is pretty hard to read and should probably be written without ternary operators in the workplace
       const nameMatches = filters.name
         ? location.description
             .toLowerCase()
@@ -72,7 +100,9 @@ const Locations = ({
 
   return (
     <div>
+      {/* Filters */}
       <div className="row px-4 mb-2">
+        {/* Location Name Filter */}
         <input
           className="col-sm mx-1"
           type="text"
@@ -80,6 +110,7 @@ const Locations = ({
           value={filters.name}
           onChange={(e) => setFilters({ ...filters, name: e.target.value })}
         />
+        {/* Country Filter */}
         <div className="dropdown col-sm mx-1">
           <input
             className="form-control"
@@ -112,6 +143,7 @@ const Locations = ({
             </ul>
           )}
         </div>
+        {/* Meta Filter */}
         <div className="dropdown col-sm mx-1">
           <input
             className="form-control"
@@ -145,7 +177,11 @@ const Locations = ({
           )}
         </div>
       </div>
-      <ul className="list-group">
+      {/* Locations */}
+      <ul
+        className="list-group"
+        style={{ maxHeight: "90vh", overflowY: "auto" }}
+      >
         {filteredLocations.map((location) => (
           <li
             key={location.id}
@@ -153,24 +189,20 @@ const Locations = ({
             style={{ cursor: "pointer", position: "relative" }}
             onClick={() => onSelectLocation(location)}
           >
-            {location.description}
+            {location.description.length > 80
+              ? location.description.slice(0, 80)
+              : location.description}
             <div className="icon-group">
               <FaEdit
                 className="icon"
-                onClick={() => console.log("Edit clicked")}
+                onClick={() => handleLocationEdit(location)}
                 title="Edit"
                 style={{ marginLeft: "10px", cursor: "pointer" }}
               />
               <FaTrash
                 className="icon"
-                onClick={() => console.log("Delete clicked")}
+                onClick={() => handleLocationDelete(location)}
                 title="Delete"
-                style={{ marginLeft: "10px", cursor: "pointer" }}
-              />
-              <FaPlus
-                className="icon"
-                onClick={() => console.log("Add to list clicked")}
-                title="Add to list"
                 style={{ marginLeft: "10px", cursor: "pointer" }}
               />
             </div>
