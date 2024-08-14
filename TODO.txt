@@ -1,7 +1,5 @@
 currently working on:
 
-when creating location, include lists it will be part of 
+dont forget to make popup are u sure to delete location maybe idk
 
--> 
-
-change backend to support add one loc to many lists with one api call
+next thing to do is make update popup when click edit location.
