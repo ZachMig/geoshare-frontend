@@ -4,9 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/Locations.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 interface LocationsProps {
-  locations: Location[];
+  locations: Location[] | null;
   metas: Meta[];
   countries: Country[];
   onSelectLocation: (location: Location) => void;
@@ -30,6 +31,7 @@ const Locations = ({
   onSelectLocation,
   fetchLists,
 }: LocationsProps) => {
+  const auth = useAuth();
   const [filters, setFilters] = useState<Filter>({
     meta: "",
     country: "",
@@ -62,7 +64,7 @@ const Locations = ({
     try {
       const response = await axios.delete(deleteUrl, {
         data: [location.id],
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+        headers: { Authorization: "Bearer " + auth?.user?.jwt },
       });
       console.log("Delete request ran with no errors. " + response.data);
       fetchLists();
@@ -78,8 +80,9 @@ const Locations = ({
   };
 
   //Maintain the subset of locations that match all current filters
-  const filteredLocations: Location[] = locations.filter(
-    (location: Location) => {
+  const filteredLocations: Location[] | null =
+    locations &&
+    locations.filter((location: Location) => {
       // If the filter is populated, return true if it matches, otherwise if no match or not populated return false
       // This is pretty hard to read and should probably be written without ternary operators in the workplace
       const nameMatches = filters.name
@@ -95,8 +98,15 @@ const Locations = ({
         : true;
 
       return nameMatches && countryMatches && metaMatches;
-    }
-  );
+    });
+
+  if (locations && locations.length == 0) {
+    return (
+      <h4>
+        No locations added. Go to "Manage Locations" to start using Geoshare!
+      </h4>
+    );
+  }
 
   return (
     <div>
@@ -182,32 +192,33 @@ const Locations = ({
         className="list-group"
         style={{ maxHeight: "90vh", overflowY: "auto" }}
       >
-        {filteredLocations.map((location) => (
-          <li
-            key={location.id}
-            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            style={{ cursor: "pointer", position: "relative" }}
-            onClick={() => onSelectLocation(location)}
-          >
-            {location.description.length > 80
-              ? location.description.slice(0, 80)
-              : location.description}
-            <div className="icon-group">
-              <FaEdit
-                className="icon"
-                onClick={() => handleLocationEdit(location)}
-                title="Edit"
-                style={{ marginLeft: "10px", cursor: "pointer" }}
-              />
-              <FaTrash
-                className="icon"
-                onClick={() => handleLocationDelete(location)}
-                title="Delete"
-                style={{ marginLeft: "10px", cursor: "pointer" }}
-              />
-            </div>
-          </li>
-        ))}
+        {filteredLocations &&
+          filteredLocations.map((location) => (
+            <li
+              key={location.id}
+              className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              style={{ cursor: "pointer", position: "relative" }}
+              onClick={() => onSelectLocation(location)}
+            >
+              {location.description.length > 80
+                ? location.description.slice(0, 80)
+                : location.description}
+              <div className="icon-group">
+                <FaEdit
+                  className="icon"
+                  onClick={() => handleLocationEdit(location)}
+                  title="Edit"
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                />
+                <FaTrash
+                  className="icon"
+                  onClick={() => handleLocationDelete(location)}
+                  title="Delete"
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                />
+              </div>
+            </li>
+          ))}
       </ul>
     </div>
   );

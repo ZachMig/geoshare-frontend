@@ -9,44 +9,23 @@ interface MyProps {
   countries: Country[];
   metas: Meta[];
   myLists: List[] | null;
+  selectedLocations: Location[] | null;
+  onSelectList: (list: List) => void;
   fetchLists: () => {};
 }
 
 //COMPONENT
-const My = ({ countries, metas, myLists, fetchLists }: MyProps) => {
-  const [selectedList, setSelectedList] = useState<List | null>(null);
+const My = ({
+  countries,
+  metas,
+  myLists,
+  selectedLocations,
+  onSelectList,
+  fetchLists,
+}: MyProps) => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
-
-  //Set Default Selected List
-  const setDefaultList = () => {
-    console.log("Running default list setter.");
-    //Don't run if lists are not loaded yet
-    if (!myLists) return;
-
-    //Don't run if there is already a selected list
-    if (selectedList) {
-      //Force deep refresh of this state
-      const newList: List = selectedList;
-      setSelectedList(newList);
-    }
-
-    //Find first list with any locations and set it as the default displayed
-    const firstPopulatedList = myLists.find(
-      (list) => list.locations.length > 0
-    );
-
-    if (firstPopulatedList) {
-      //Force deep refresh of this state
-      const newList: List = firstPopulatedList;
-      setSelectedList(newList);
-    } else {
-      //User has no lists or locations
-      //TODO do something idk yet
-      //setNoLists(true);
-    }
-  };
 
   //USEEFFECT STUB
   useEffect(() => {
@@ -54,7 +33,6 @@ const My = ({ countries, metas, myLists, fetchLists }: MyProps) => {
     if (!myLists) {
       fetchLists();
     }
-    setDefaultList();
   }, [myLists]);
 
   //Placeholder if lists are not loaded
@@ -72,14 +50,12 @@ const My = ({ countries, metas, myLists, fetchLists }: MyProps) => {
     <div className="container-fluid mt-5 h-100">
       <div className="row">
         <div className="col-md-3">
-          {myLists && (
-            <Lists myLists={myLists} onSelectList={setSelectedList} />
-          )}
+          {myLists && <Lists myLists={myLists} onSelectList={onSelectList} />}
         </div>
         <div className="col-md-4">
-          {selectedList && metas && countries && (
+          {selectedLocations && metas && countries && (
             <Locations
-              locations={selectedList.locations}
+              locations={selectedLocations}
               metas={metas}
               countries={countries}
               onSelectLocation={setSelectedLocation}
