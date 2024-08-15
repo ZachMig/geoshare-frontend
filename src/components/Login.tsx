@@ -1,79 +1,29 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [action, setAction] = useState("");
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (action === "login") {
-      await login();
+      auth.logout();
+      await auth.login(username, password);
     } else if (action === "create") {
-      await createUser();
-      await login();
+      await auth.createAccount(username, password);
+      await auth.login(username, password);
     } else {
       console.error(`Something went horribly wrong, action = ${action}`);
     }
     //Redirect to a landing page here
     navigate("/my");
   };
-
-  //Create new user
-  async function createUser() {
-    const url = "http://localhost:8080/api/users/create";
-
-    const requestBody = {
-      username,
-      password,
-    };
-
-    try {
-      const response = await axios.post(url, requestBody, {
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        console.log("User created successfully.");
-      }
-    } catch (e) {
-      console.error(`Error attempting to create user. ${e}`);
-    }
-  }
-
-  //Login and get JWT
-  async function login() {
-    const url = "http://localhost:8080/api/auth/gettoken";
-
-    const requestBody = {
-      username,
-      password,
-    };
-
-    try {
-      const response = await axios.post(url, requestBody, {
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        const { jwt, userID } = response.data;
-        localStorage.setItem("jwt", jwt);
-        localStorage.setItem("userID", userID);
-        localStorage.setItem("username", username);
-        console.log("User logged in successfully.");
-      }
-    } catch (e) {
-      console.error(`Error attempting to login. ${e}`);
-    }
-  }
 
   return (
     <>

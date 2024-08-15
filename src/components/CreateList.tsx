@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 interface CreateListProps {
   fetchLists: () => {};
@@ -8,15 +9,16 @@ interface CreateListProps {
 
 //COMPONENT
 const CreateList = ({ fetchLists }: CreateListProps) => {
+  const auth = useAuth();
   const [submitResponse, setSubmitResponse] = useState("");
   const [listInfo, setListInfo] = useState<{
     description: string;
     name: string;
-    userID: string | null;
+    userID: number;
   }>({
     description: "",
     name: "",
-    userID: localStorage.getItem("userID"),
+    userID: auth.user.id,
   });
 
   //Create New List
@@ -38,7 +40,7 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        Authorization: "Bearer " + auth.user.jwt,
       },
     };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Country, List, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 interface CreateLocationProps {
   countries: Country[];
@@ -20,6 +21,7 @@ const CreateLocation = ({
   myLists,
   fetchLists,
 }: CreateLocationProps) => {
+  const auth = useAuth();
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
   const [countryFilter, setCountryFilter] = useState("");
@@ -31,14 +33,14 @@ const CreateLocation = ({
     description: string;
     countryName: string;
     meta: string;
-    userID: string | null;
+    userID: number;
     listIDs: number[];
   }>({
     url: "",
     description: "",
     countryName: "",
     meta: "",
-    userID: localStorage.getItem("userID"),
+    userID: auth.user.id,
     listIDs: [],
   });
 
@@ -124,7 +126,7 @@ const CreateLocation = ({
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        Authorization: "Bearer " + auth.user.jwt,
       },
     };
 
