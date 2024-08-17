@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { LocInfo, Location } from "../types";
+import { Country, LocInfo, Location, Meta } from "../types";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import "../css/EditLocation.css";
+import FilteredDropdown from "./FilteredDropdown";
 
 interface EditLocationProps {
   location: Location;
+  countries: Country[];
+  metas: Meta[];
   fetchLists: () => void;
   setEditIsVisisble: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditLocation = ({
   location,
+  countries,
+  metas,
   fetchLists,
   setEditIsVisisble,
 }: EditLocationProps) => {
   const auth = useAuth();
-  const [locInfo, setLocInfo] = useState<LocInfo>({
+  const [updatedLocInfo, setUpdatedLocInfo] = useState<LocInfo>({
     url: "",
     description: "",
     countryName: "",
@@ -28,8 +33,13 @@ const EditLocation = ({
 
   const url = "";
 
+  const countryNamesLower = countries.map((country) =>
+    country.name.toLowerCase()
+  );
+  const metaNamesLower = metas.map((meta) => meta.name.toLowerCase());
+
   useEffect(() => {
-    setLocInfo({
+    setUpdatedLocInfo({
       url: location.url,
       description: location.description,
       countryName: location.countryName,
@@ -40,6 +50,16 @@ const EditLocation = ({
   }, []);
 
   const handleSubmit = async () => {
+    if (!countryNamesLower.includes(updatedLocInfo.countryName.toLowerCase())) {
+      setSubmitResponse("Please enter a valid country.");
+      return;
+    }
+
+    if (!metaNamesLower.includes(updatedLocInfo.meta.toLowerCase())) {
+      setSubmitResponse("Please enter a valid meta.");
+      return;
+    }
+
     try {
       const config = {
         headers: {
@@ -48,17 +68,37 @@ const EditLocation = ({
         },
       };
 
-      await axios.put(url, locInfo, config);
+      const response = await axios.put(url, updatedLocInfo, config);
+
+      console.log("Update location response: " + response.data);
+      setSubmitResponse("Update location response: " + response.data);
+
+      //Reset info to update
+      setUpdatedLocInfo({
+        ...updatedLocInfo,
+        url: "",
+        description: "",
+        countryName: "",
+        meta: "",
+      });
+
+      //Refresh lists
+      fetchLists();
     } catch (error) {
       console.error("Update location request failed: " + error);
     }
-
-    //Refresh lists
-    fetchLists();
   };
 
   const closeEditWindow = () => {
     setEditIsVisisble(false);
+  };
+
+  const handleCountryChange = (selectedCountry: string) => {
+    setUpdatedLocInfo({ ...updatedLocInfo, countryName: selectedCountry });
+  };
+
+  const handleMetaChange = (selectedMeta: string) => {
+    setUpdatedLocInfo({ ...updatedLocInfo, meta: selectedMeta });
   };
 
   return (
@@ -76,8 +116,10 @@ const EditLocation = ({
               className="form-control"
               id="url"
               placeholder="google.com/maps/~"
-              value={locInfo.url}
-              onChange={(e) => setLocInfo({ ...locInfo, url: e.target.value })}
+              value={updatedLocInfo.url}
+              onChange={(e) =>
+                setUpdatedLocInfo({ ...updatedLocInfo, url: e.target.value })
+              }
               required
             />
           </div>
@@ -91,11 +133,30 @@ const EditLocation = ({
               className="form-control"
               id="desc"
               placeholder="Typical east nusa round..."
-              value={locInfo.description}
+              value={updatedLocInfo.description}
               onChange={(e) =>
-                setLocInfo({ ...locInfo, description: e.target.value })
+                setUpdatedLocInfo({
+                  ...updatedLocInfo,
+                  description: e.target.value,
+                })
               }
               required
+            />
+          </div>
+          {/*Country*/}
+          <div className="row mt-2">
+            <FilteredDropdown
+              dropdownName="Country"
+              items={countries.map((country) => country.name)}
+              defaultPlaceholder={location.countryName}
+              returnItemToParent={handleCountryChange}
+            />
+            {/*Meta*/}
+            <FilteredDropdown
+              dropdownName="Meta"
+              items={metas.map((meta) => meta.name)}
+              defaultPlaceholder={location.meta}
+              returnItemToParent={handleMetaChange}
             />
           </div>
           <div className="el-actions">

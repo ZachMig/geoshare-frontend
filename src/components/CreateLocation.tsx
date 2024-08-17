@@ -147,12 +147,14 @@ const CreateLocation = ({
           <FilteredDropdown
             dropdownName="Country"
             items={countryNames}
+            defaultPlaceholder={countryNames[0]}
             returnItemToParent={handleCountryChange}
           />
           {/*Meta*/}
           <FilteredDropdown
             dropdownName="Meta"
             items={metaNames}
+            defaultPlaceholder={metaNames[0]}
             returnItemToParent={handleMetaChange}
           />
         </div>

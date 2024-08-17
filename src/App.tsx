@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Manage from "./components/Manage.tsx";
 import { useAuth } from "./hooks/useAuth.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
 
 //COMPONENT
 function App() {
@@ -131,6 +132,7 @@ function App() {
     console.log("USER CHANGING");
     setMyLists(null);
     setSelectedLocations(null);
+    setSelectedLocation(null);
     fetchLists();
   }, [auth.user]);
 
@@ -154,31 +156,39 @@ function App() {
         <Route
           path="/my"
           element={
-            <My
-              countries={countries}
-              metas={metas}
-              myLists={myLists}
-              selectedList={selectedList}
-              selectedLocations={selectedLocations}
-              selectedLocation={selectedLocation}
-              onSelectList={onSelectList}
-              onSelectLocation={onSelectLocation}
-              fetchLists={fetchLists}
+            <PrivateRoute
+              Child={
+                <My
+                  countries={countries}
+                  metas={metas}
+                  myLists={myLists}
+                  selectedList={selectedList}
+                  selectedLocations={selectedLocations}
+                  selectedLocation={selectedLocation}
+                  onSelectList={onSelectList}
+                  onSelectLocation={onSelectLocation}
+                  fetchLists={fetchLists}
+                />
+              }
             />
           }
         />
         <Route
           path="/manage"
           element={
-            <Manage
-              countries={countries}
-              metas={metas}
-              myLists={myLists}
-              fetchLists={fetchLists}
+            <PrivateRoute
+              Child={
+                <Manage
+                  countries={countries}
+                  metas={metas}
+                  myLists={myLists}
+                  fetchLists={fetchLists}
+                />
+              }
             />
           }
         />
-        <Route path="/account" element={<Account />} />
+        <Route path="/account" element={<PrivateRoute Child={<Account />} />} />
       </Routes>
     </>
   );

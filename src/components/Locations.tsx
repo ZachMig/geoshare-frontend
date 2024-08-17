@@ -6,6 +6,8 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import EditLocation from "./EditLocations";
+import FilteredDropdown from "./FilteredDropdown";
+import { Link } from "react-router-dom";
 
 interface LocationsProps {
   locations: Location[] | null;
@@ -22,7 +24,7 @@ interface Filter {
   meta: string;
 }
 
-//MAKE SURE LOCATION FIELDS ARE NOT NULL OR APP WILL CRASH!!!!
+//MAKE SURE LOCATION FIELDS ARE NOT NULL OR APP WILL CRASH (maybe?)!!!!
 //MAKE SURE THERE IS ALWAYS A VALID LIST WITH LOCATIONS OR APP WILL CRASH!!!
 
 //COMPONENT
@@ -40,26 +42,15 @@ const Locations = ({
     country: "",
     name: "",
   });
-  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
-  const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
+
   const [isEditVisible, setIsEditVisible] = useState(false);
-
-  const openCountryDropdown = () => {
-    setCountryDropdownOpen(!countryDropdownOpen);
-  };
-
-  const openMetaDropdown = () => {
-    setMetaDropdownOpen(!metaDropdownOpen);
-  };
 
   const handleCountrySelect = (country: string) => {
     setFilters({ ...filters, country: country });
-    setCountryDropdownOpen(false);
   };
 
   const handleMetaSelect = (meta: string) => {
     setFilters({ ...filters, meta: meta });
-    setMetaDropdownOpen(false);
   };
 
   const handleLocationDelete = async (location: Location) => {
@@ -81,16 +72,16 @@ const Locations = ({
   };
 
   const handleLocationEdit = (location: Location) => {
-    setIsEditVisible(true);
     console.log("Edit clicked for location: " + location.description);
+    setIsEditVisible(true);
   };
 
-  //Maintain the subset of locations that match all current filters
+  //Maintain the subset of locations that match all current filters, extremely readable versionwwww
   const filteredLocations: Location[] | null =
     locations &&
     locations.filter((location: Location) => {
       // If the filter is populated, return true if it matches, otherwise if no match or not populated return false
-      // This is pretty hard to read and should probably be written without ternary operators in the workplace
+      // This is pretty hard to read if unfamiliar and should probably be written without ternary operators in the workplace
       const nameMatches = filters.name
         ? location.description
             .toLowerCase()
@@ -103,104 +94,61 @@ const Locations = ({
         ? location.meta.toLowerCase() === filters.meta.toLowerCase()
         : true;
 
+      //Include this location in the filtered list if it matches all current filters
       return nameMatches && countryMatches && metaMatches;
     });
 
   if (locations && locations.length == 0) {
     return (
-      <h4>
-        No locations added. Go to "Manage Locations" to start using Geoshare!
-      </h4>
+      <div className="row px-4 mt-5 d-flex align-items-end">
+        <h4>
+          No locations added. Go to <Link to="/manage">Manage Locations</Link>{" "}
+          to start using Geoshare!
+        </h4>
+      </div>
     );
   }
 
   return (
     <div>
+      {/* Edit Location Modal */}
       {isEditVisible && selectedLocation && (
         <EditLocation
+          countries={countries}
+          metas={metas}
           location={selectedLocation}
           fetchLists={fetchLists}
           setEditIsVisisble={setIsEditVisible}
         />
       )}
       {/* Filters */}
-      <div className="row px-4 mb-2">
+      <div className="row px-4 mb-2 d-flex align-items-end">
         {/* Location Name Filter */}
-        <input
-          className="col-sm mx-1"
-          type="text"
-          placeholder="Name"
-          value={filters.name}
-          onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-        />
+        <div className="col-sm mx-1">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Name"
+            value={filters.name}
+            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+          />
+        </div>
         {/* Country Filter */}
-        <div className="dropdown col-sm mx-1">
-          <input
-            className="form-control"
-            placeholder="Country"
-            readOnly
-            onClick={openCountryDropdown}
-            value={filters.country || ""}
-          />
-          {countryDropdownOpen && (
-            <ul className="list-group dropdown-menu show">
-              <li
-                key="Clear_Country"
-                className="list-group-item list-group-item-action"
-                onClick={() => {
-                  setFilters({ ...filters, country: "" });
-                  setCountryDropdownOpen(false);
-                }}
-              >
-                Reset Filter
-              </li>
-              {countries.map((country) => (
-                <li
-                  key={country.id}
-                  className="list-group-item list-group-item-action"
-                  onClick={() => handleCountrySelect(country.name)}
-                >
-                  {country.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <FilteredDropdown
+          dropdownName=""
+          items={countries.map((country) => country.name)}
+          defaultPlaceholder={countries[0].name}
+          returnItemToParent={handleCountrySelect}
+        />
         {/* Meta Filter */}
-        <div className="dropdown col-sm mx-1">
-          <input
-            className="form-control"
-            placeholder="Meta"
-            readOnly
-            onClick={openMetaDropdown}
-            value={filters.meta}
-          />
-          {metaDropdownOpen && (
-            <ul className="list-group dropdown-menu show">
-              <li
-                key="Clear_Meta"
-                className="list-group-item list-group-item-action"
-                onClick={() => {
-                  setFilters({ ...filters, meta: "" });
-                  setMetaDropdownOpen(false);
-                }}
-              >
-                Reset Filter
-              </li>
-              {metas.map((meta) => (
-                <li
-                  key={meta.id}
-                  className="list-group-item list-group-item-action"
-                  onClick={() => handleMetaSelect(meta.name)}
-                >
-                  {meta.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <FilteredDropdown
+          dropdownName=""
+          items={metas.map((meta) => meta.name)}
+          defaultPlaceholder={metas[0].name}
+          returnItemToParent={handleMetaSelect}
+        />
       </div>
-      {/* Locations */}
+      {/* Filtered Locations */}
       <ul
         className="list-group"
         style={{ maxHeight: "90vh", overflowY: "auto" }}
@@ -221,13 +169,16 @@ const Locations = ({
               {location.description.length > 80
                 ? location.description.slice(0, 80)
                 : location.description}
+              {/* Action Buttons */}
               <div className="icon-group">
+                {/* Edit Location Button */}
                 <FaEdit
                   className="icon"
                   onClick={() => handleLocationEdit(location)}
                   title="Edit"
                   style={{ marginLeft: "10px", cursor: "pointer" }}
                 />
+                {/* Delete Location Button */}
                 <FaTrash
                   className="icon"
                   onClick={() => handleLocationDelete(location)}

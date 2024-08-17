@@ -39,8 +39,15 @@ function useProvideAuth() {
   const [user, setUser] = useState<User>(defaultUser);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  async function logout() {
+    setUser(defaultUser);
+    setIsLoggedIn(false);
+  }
+
   //LOGIN
   const login = async (username: string, password: string) => {
+    logout();
+
     const url = "http://localhost:8080/api/auth/gettoken";
 
     const requestBody = {
@@ -87,11 +94,6 @@ function useProvideAuth() {
     } catch (e) {
       console.error(`Error attempting to create user. ${e}`);
     }
-  }
-
-  async function logout() {
-    setUser(defaultUser);
-    setIsLoggedIn(false);
   }
 
   return {

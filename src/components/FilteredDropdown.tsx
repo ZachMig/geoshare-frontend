@@ -3,12 +3,18 @@ import { useState } from "react";
 interface FilteredDropdownProps {
   dropdownName: string;
   items: string[];
+  defaultPlaceholder: string;
   returnItemToParent: (item: string) => void;
 }
 
+/**
+ * @param items must be an array of distinct values
+ *
+ */
 const FilteredDropdown = ({
   dropdownName,
   items,
+  defaultPlaceholder,
   returnItemToParent,
 }: FilteredDropdownProps) => {
   const [filter, setFilter] = useState("");
@@ -21,14 +27,12 @@ const FilteredDropdown = ({
   const handleItemChange = (e: any) => {
     setFilter(e.target.value);
     setDropdownOpen(true);
-    //set info to be passed back up
     returnItemToParent(e.target.value);
   };
 
   const handleItemSelect = (item: string) => {
     setFilter(item);
     setDropdownOpen(false);
-    //set info to be passed back up
     returnItemToParent(item);
   };
 
@@ -41,7 +45,7 @@ const FilteredDropdown = ({
         type="text"
         id="country"
         className="form-control"
-        placeholder={items[0]}
+        placeholder={defaultPlaceholder}
         onClick={() => setDropdownOpen(!dropdownOpen)}
         onChange={handleItemChange}
         value={filter}
