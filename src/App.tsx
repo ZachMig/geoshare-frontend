@@ -18,6 +18,9 @@ function App() {
   const [selectedLocations, setSelectedLocations] = useState<Location[] | null>(
     null
   );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null
+  );
 
   //Set Default Selected List
   const setDefaultList = () => {
@@ -36,7 +39,8 @@ function App() {
 
       const refreshedList = myLists.find((list) => list.id === selectedList.id);
 
-      if (refreshedList) {
+      //Make sure this list hasn't been deleted since last check and actually has locations
+      if (refreshedList && refreshedList.locations.length > 0) {
         setSelectedList(refreshedList);
         setSelectedLocations(refreshedList.locations);
         return;
@@ -84,9 +88,25 @@ function App() {
     }
   };
 
-  const onSelectList = (list: List) => {
+  const onSelectList = (list: List | null) => {
     setSelectedList(list);
-    setSelectedLocations(list.locations);
+
+    //If set list is not null (i.e. not running a list delete command)
+    if (list) {
+      setSelectedLocations(list.locations);
+      if (list.locations.length === 0) {
+        setSelectedLocation(null);
+      } else {
+        setSelectedLocation(list.locations[0]);
+      }
+    } else {
+      //probably being called off of a list delete command so find a new default list
+      setDefaultList();
+    }
+  };
+
+  const onSelectLocation = (location: Location | null) => {
+    setSelectedLocation(location);
   };
 
   const fetchCountriesAndMetas = async () => {
@@ -138,8 +158,11 @@ function App() {
               countries={countries}
               metas={metas}
               myLists={myLists}
+              selectedList={selectedList}
               selectedLocations={selectedLocations}
+              selectedLocation={selectedLocation}
               onSelectList={onSelectList}
+              onSelectLocation={onSelectLocation}
               fetchLists={fetchLists}
             />
           }
