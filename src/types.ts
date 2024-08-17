@@ -15,6 +15,15 @@ export interface Location {
   meta: string;
 }
 
+export interface LocInfo {
+  url: string;
+  description: string;
+  countryName: string;
+  meta: string;
+  userID: number;
+  listIDs: number[];
+}
+
 export interface Meta {
   id: number;
   name: string;

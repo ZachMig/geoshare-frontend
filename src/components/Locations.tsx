@@ -5,12 +5,14 @@ import "../css/Locations.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import EditLocation from "./EditLocations";
 
 interface LocationsProps {
   locations: Location[] | null;
+  selectedLocation: Location | null;
   metas: Meta[];
   countries: Country[];
-  onSelectLocation: (location: Location) => void;
+  onSelectLocation: (location: Location | null) => void;
   fetchLists: () => {};
 }
 
@@ -26,6 +28,7 @@ interface Filter {
 //COMPONENT
 const Locations = ({
   locations,
+  selectedLocation,
   metas,
   countries,
   onSelectLocation,
@@ -39,6 +42,7 @@ const Locations = ({
   });
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
+  const [isEditVisible, setIsEditVisible] = useState(false);
 
   const openCountryDropdown = () => {
     setCountryDropdownOpen(!countryDropdownOpen);
@@ -68,6 +72,7 @@ const Locations = ({
       });
       console.log("Delete request ran with no errors. " + response.data);
       fetchLists();
+      onSelectLocation(null);
     } catch (error) {
       console.error(
         "Error deleting location: " + location.description + " - " + error
@@ -76,7 +81,8 @@ const Locations = ({
   };
 
   const handleLocationEdit = (location: Location) => {
-    //make an edit popup or something
+    setIsEditVisible(true);
+    console.log("Edit clicked for location: " + location.description);
   };
 
   //Maintain the subset of locations that match all current filters
@@ -110,6 +116,13 @@ const Locations = ({
 
   return (
     <div>
+      {isEditVisible && selectedLocation && (
+        <EditLocation
+          location={selectedLocation}
+          fetchLists={fetchLists}
+          setEditIsVisisble={setIsEditVisible}
+        />
+      )}
       {/* Filters */}
       <div className="row px-4 mb-2">
         {/* Location Name Filter */}
@@ -196,7 +209,12 @@ const Locations = ({
           filteredLocations.map((location) => (
             <li
               key={location.id}
-              className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center
+                ${
+                  selectedLocation && selectedLocation.id === location.id
+                    ? "active"
+                    : ""
+                }`}
               style={{ cursor: "pointer", position: "relative" }}
               onClick={() => onSelectLocation(location)}
             >

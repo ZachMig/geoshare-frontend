@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Country, List, Location, Meta } from "../types";
 import Lists from "./Lists";
 import Locations from "./Locations";
@@ -9,8 +9,11 @@ interface MyProps {
   countries: Country[];
   metas: Meta[];
   myLists: List[] | null;
+  selectedList: List | null;
   selectedLocations: Location[] | null;
-  onSelectList: (list: List) => void;
+  selectedLocation: Location | null;
+  onSelectList: (list: List | null) => void;
+  onSelectLocation: (location: Location | null) => void;
   fetchLists: () => {};
 }
 
@@ -19,15 +22,17 @@ const My = ({
   countries,
   metas,
   myLists,
+  selectedList,
   selectedLocations,
+  selectedLocation,
   onSelectList,
+  onSelectLocation,
   fetchLists,
 }: MyProps) => {
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+  // const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+  //   null
+  // );
 
-  //USEEFFECT STUB
   useEffect(() => {
     //Load user lists if not done yet
     if (!myLists) {
@@ -50,15 +55,22 @@ const My = ({
     <div className="container-fluid mt-5 h-100">
       <div className="row">
         <div className="col-md-3">
-          {myLists && <Lists myLists={myLists} onSelectList={onSelectList} />}
+          {myLists && (
+            <Lists
+              myLists={myLists}
+              selectedList={selectedList}
+              onSelectList={onSelectList}
+            />
+          )}
         </div>
         <div className="col-md-4">
           {selectedLocations && metas && countries && (
             <Locations
               locations={selectedLocations}
+              selectedLocation={selectedLocation}
               metas={metas}
               countries={countries}
-              onSelectLocation={setSelectedLocation}
+              onSelectLocation={onSelectLocation}
               fetchLists={fetchLists}
             />
           )}

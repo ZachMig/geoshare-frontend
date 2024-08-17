@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Country, List, Meta } from "../types";
+import { Country, List, LocInfo, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import FilteredDropdown from "./FilteredDropdown";
 
 interface CreateLocationProps {
   countries: Country[];
@@ -10,9 +11,6 @@ interface CreateLocationProps {
   myLists: List[] | null;
   fetchLists: () => {};
 }
-
-//TODO
-//NEW DROPDOWN IS STILL BUGGED AFTER SELECT DOESNT POPULATE OR SOMETHING
 
 //COMPONENT
 const CreateLocation = ({
@@ -22,20 +20,10 @@ const CreateLocation = ({
   fetchLists,
 }: CreateLocationProps) => {
   const auth = useAuth();
-  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
-  const [metaDropdownOpen, setMetaDropdownOpen] = useState(false);
-  const [countryFilter, setCountryFilter] = useState("");
-  const [metaFilter, setMetaFilter] = useState("");
+
   const [submitResponse, setSubmitResponse] = useState("");
   const [listsToAdd, setListsToAdd] = useState(new Set());
-  const [locInfo, setLocInfo] = useState<{
-    url: string;
-    description: string;
-    countryName: string;
-    meta: string;
-    userID: number;
-    listIDs: number[];
-  }>({
+  const [locInfo, setLocInfo] = useState<LocInfo>({
     url: "",
     description: "",
     countryName: "",
@@ -51,48 +39,12 @@ const CreateLocation = ({
     name.toLowerCase()
   );
 
-  const filteredCountries = countryNames.filter((name) => {
-    return countryFilter
-      ? name.toLowerCase().includes(countryFilter.toLowerCase())
-      : true;
-  });
-
-  const filteredMetas = metaNames.filter((name) => {
-    return metaFilter
-      ? name.toLowerCase().includes(metaFilter.toLowerCase())
-      : true;
-  });
-
-  const openCountryDropdown = () => {
-    setCountryDropdownOpen(!countryDropdownOpen);
+  const handleCountryChange = (selectedCountry: string) => {
+    setLocInfo({ ...locInfo, countryName: selectedCountry });
   };
 
-  const openMetaDropdown = () => {
-    setMetaDropdownOpen(!metaDropdownOpen);
-  };
-
-  const handleCountrySelect = (country: string) => {
-    setLocInfo({ ...locInfo, countryName: country });
-    setCountryFilter(country);
-    setCountryDropdownOpen(false);
-  };
-
-  const handleMetaSelect = (meta: string) => {
-    setLocInfo({ ...locInfo, meta: meta });
-    setMetaFilter(meta);
-    setMetaDropdownOpen(false);
-  };
-
-  const handleCountryChange = (e: any) => {
-    setCountryFilter(e.target.value);
-    setCountryDropdownOpen(true);
-    setLocInfo({ ...locInfo, countryName: e.target.value });
-  };
-
-  const handleMetaChange = (e: any) => {
-    setMetaFilter(e.target.value);
-    setMetaDropdownOpen(true);
-    setLocInfo({ ...locInfo, meta: e.target.value });
+  const handleMetaChange = (selectedMeta: string) => {
+    setLocInfo({ ...locInfo, meta: selectedMeta });
   };
 
   //Add the selected list to be included to lists this location
@@ -139,17 +91,13 @@ const CreateLocation = ({
       console.log("Create location response: " + response.data);
       setSubmitResponse("Create location response: " + response.data);
 
-      //Reset all input fields
+      //Reset some input fields
       setLocInfo({
         ...locInfo,
         url: "",
         description: "",
-        countryName: "",
-        meta: "",
       });
       setListsToAdd(new Set());
-      setCountryFilter("");
-      setMetaFilter("");
       fetchLists();
     } catch (error) {
       console.error("Error creating location: " + error);
@@ -196,61 +144,17 @@ const CreateLocation = ({
         </div>
         {/*Country*/}
         <div className="row mt-2">
-          <div className="dropdown col-sm mx-1">
-            <label htmlFor="country" className="form-label">
-              Country
-            </label>
-            <input
-              type="text"
-              id="country"
-              className="form-control"
-              placeholder={countries[0].name}
-              onClick={openCountryDropdown}
-              onChange={handleCountryChange}
-              value={countryFilter}
-            />
-            {countryDropdownOpen && (
-              <ul className="list-group dropdown-menu show">
-                {filteredCountries.map((country) => (
-                  <li
-                    key={country}
-                    className="list-group-item list-group-item-action"
-                    onClick={() => handleCountrySelect(country)}
-                  >
-                    {country}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <FilteredDropdown
+            dropdownName="Country"
+            items={countryNames}
+            returnItemToParent={handleCountryChange}
+          />
           {/*Meta*/}
-          <div className="dropdown col-sm mx-1">
-            <label htmlFor="meta" className="form-label">
-              Meta
-            </label>
-            <input
-              type="text"
-              id="meta"
-              className="form-control"
-              placeholder={metas[0].name}
-              onClick={openMetaDropdown}
-              onChange={handleMetaChange}
-              value={metaFilter}
-            />
-            {metaDropdownOpen && (
-              <ul className="list-group dropdown-menu show">
-                {filteredMetas.map((meta) => (
-                  <li
-                    key={meta}
-                    className="list-group-item list-group-item-action"
-                    onClick={() => handleMetaSelect(meta)}
-                  >
-                    {meta}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <FilteredDropdown
+            dropdownName="Meta"
+            items={metaNames}
+            returnItemToParent={handleMetaChange}
+          />
         </div>
         {/*Lists to Include*/}
         <div className="mt-2" style={{ maxHeight: "220px", overflowY: "auto" }}>
