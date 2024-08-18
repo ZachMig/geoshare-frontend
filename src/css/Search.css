@@ -1,0 +1,55 @@
+/* Adjusting the switch to be vertical */
+.form-switch-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-check-input {
+  --bs-form-check-bg-image: none !important; /* These two lines remove the checkmark from behind the switch when it toggles. */
+  background-image: none !important; /* These two lines remove the checkmark from behind the switch when it toggles. */
+  width: 20px !important;
+  height: 40px !important;
+  background-color: #0d6efd !important; /* Color of the switch */
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background-color 0.3s, transform 0.3s;
+  border: none; /* Removes any default border */
+  outline: none; /* Removes focus outline */
+}
+
+/* Custom knob inside the switch */
+.form-check-input:before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: white !important; /* Color of the knob */
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+/* Move the knob down when the switch is checked */
+.form-check-input:checked:before {
+  transform: translateY(20px); /* Move the knob down when checked */
+}
+
+.form-check-label {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Ensures the switch stays enabled even when checked */
+.form-check-input:checked {
+  background-color: #0d6efd !important; /* Color when the switch is checked */
+}
+
+/* Remove the default checkmark */
+.form-check-input:checked::after {
+  display: none !important;
+}

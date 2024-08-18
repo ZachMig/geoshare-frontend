@@ -29,10 +29,6 @@ const My = ({
   onSelectLocation,
   fetchLists,
 }: MyProps) => {
-  // const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-  //   null
-  // );
-
   useEffect(() => {
     //Load user lists if not done yet
     if (!myLists) {
@@ -57,7 +53,7 @@ const My = ({
         <div className="col">
           {myLists && (
             <Lists
-              myLists={myLists}
+              allLists={myLists}
               selectedList={selectedList}
               onSelectList={onSelectList}
             />

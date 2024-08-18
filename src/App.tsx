@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Manage from "./components/Manage.tsx";
 import { useAuth } from "./hooks/useAuth.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
+import Search from "./components/Search.tsx";
 
 //COMPONENT
 function App() {
@@ -78,7 +79,7 @@ function App() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/lists/findformatted?uname=${auth?.user?.username}`,
+        `http://localhost:8080/api/lists/findformatted?uname=${auth.user.username}`,
         config
       );
 
@@ -187,6 +188,10 @@ function App() {
               }
             />
           }
+        />
+        <Route
+          path="/search"
+          element={<Search countries={countries} metas={metas} />}
         />
         <Route path="/account" element={<PrivateRoute Child={<Account />} />} />
       </Routes>

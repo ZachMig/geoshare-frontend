@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Country, Location, Meta } from "../types";
+import { Country, Location, LocationFilter, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/Locations.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -18,12 +18,6 @@ interface LocationsProps {
   fetchLists: () => {};
 }
 
-interface Filter {
-  name: string;
-  country: string;
-  meta: string;
-}
-
 //MAKE SURE LOCATION FIELDS ARE NOT NULL OR APP WILL CRASH (maybe?)!!!!
 //MAKE SURE THERE IS ALWAYS A VALID LIST WITH LOCATIONS OR APP WILL CRASH!!!
 
@@ -37,7 +31,7 @@ const Locations = ({
   fetchLists,
 }: LocationsProps) => {
   const auth = useAuth();
-  const [filters, setFilters] = useState<Filter>({
+  const [filters, setFilters] = useState<LocationFilter>({
     meta: "",
     country: "",
     name: "",
@@ -63,7 +57,7 @@ const Locations = ({
       });
       console.log("Delete request ran with no errors. " + response.data);
       fetchLists();
-      onSelectLocation(null);
+      onSelectLocation(null); // TODO find a better way to reset locaionPreview here
     } catch (error) {
       console.error(
         "Error deleting location: " + location.description + " - " + error
@@ -82,6 +76,7 @@ const Locations = ({
     locations.filter((location: Location) => {
       // If the filter is populated, return true if it matches, otherwise if no match or not populated return false
       // This is pretty hard to read if unfamiliar and should probably be written without ternary operators in the workplace
+      // I rewrote it a little nicer in PublicLocations.tsx
       const nameMatches = filters.name
         ? location.description
             .toLowerCase()
