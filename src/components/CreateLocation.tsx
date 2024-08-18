@@ -24,6 +24,7 @@ const CreateLocation = ({
   const [submitResponse, setSubmitResponse] = useState("");
   const [listsToAdd, setListsToAdd] = useState(new Set());
   const [locInfo, setLocInfo] = useState<LocInfo>({
+    id: "",
     url: "",
     description: "",
     countryName: "",

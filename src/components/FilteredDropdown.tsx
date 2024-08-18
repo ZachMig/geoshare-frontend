@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../css/FilteredItems.css";
 
 interface FilteredDropdownProps {
   dropdownName: string;

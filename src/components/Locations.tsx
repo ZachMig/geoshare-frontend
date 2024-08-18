@@ -122,7 +122,7 @@ const Locations = ({
         />
       )}
       {/* Filters */}
-      <div className="row px-4 mb-2 d-flex align-items-end">
+      <div className="row mb-2 d-flex align-items-end">
         {/* Location Name Filter */}
         <div className="col-sm mx-1">
           <input

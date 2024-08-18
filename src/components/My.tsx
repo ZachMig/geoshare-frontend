@@ -54,7 +54,7 @@ const My = ({
 
     <div className="container-fluid mt-5 h-100">
       <div className="row">
-        <div className="col-md-3">
+        <div className="col">
           {myLists && (
             <Lists
               myLists={myLists}
@@ -63,7 +63,7 @@ const My = ({
             />
           )}
         </div>
-        <div className="col-md-4">
+        <div className="col">
           {selectedLocations && metas && countries && (
             <Locations
               locations={selectedLocations}
@@ -75,7 +75,7 @@ const My = ({
             />
           )}
         </div>
-        <div className="col-md-5">
+        <div className="col">
           {selectedLocation && <LocationPreview location={selectedLocation} />}
         </div>
       </div>

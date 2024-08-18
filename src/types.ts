@@ -16,6 +16,7 @@ export interface Location {
 }
 
 export interface LocInfo {
+  id: string;
   url: string;
   description: string;
   countryName: string;
