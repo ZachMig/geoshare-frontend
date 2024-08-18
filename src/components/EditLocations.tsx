@@ -22,6 +22,7 @@ const EditLocation = ({
 }: EditLocationProps) => {
   const auth = useAuth();
   const [updatedLocInfo, setUpdatedLocInfo] = useState<LocInfo>({
+    id: "",
     url: "",
     description: "",
     countryName: "",
@@ -31,7 +32,7 @@ const EditLocation = ({
   });
   const [submitResponse, setSubmitResponse] = useState("");
 
-  const url = "";
+  const url = "http://localhost:8080/api/locations/update";
 
   const countryNamesLower = countries.map((country) =>
     country.name.toLowerCase()
@@ -40,6 +41,7 @@ const EditLocation = ({
 
   useEffect(() => {
     setUpdatedLocInfo({
+      id: location.id.toString(),
       url: location.url,
       description: location.description,
       countryName: location.countryName,
@@ -81,7 +83,7 @@ const EditLocation = ({
         countryName: "",
         meta: "",
       });
-
+      closeEditWindow();
       //Refresh lists
       fetchLists();
     } catch (error) {
@@ -107,7 +109,7 @@ const EditLocation = ({
         <span>{submitResponse}</span>
         <form onSubmit={handleSubmit} className="mt-3 mx-auto">
           {/*Url*/}
-          <div className="mt-2">
+          <div className="row mt-2">
             <label htmlFor="url" className="form-label">
               Street View URL
             </label>
@@ -124,7 +126,7 @@ const EditLocation = ({
             />
           </div>
           {/*Description*/}
-          <div className="mt-2">
+          <div className="row mt-2">
             <label htmlFor="desc" className="form-label">
               Description
             </label>
@@ -160,11 +162,19 @@ const EditLocation = ({
             />
           </div>
           <div className="el-actions">
-            <button type="button" onClick={handleSubmit}>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={handleSubmit}
+            >
               Submit
             </button>
-            <button type="button" onClick={closeEditWindow}>
-              Cancel
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={closeEditWindow}
+            >
+              Close
             </button>
           </div>
         </form>
