@@ -40,3 +40,9 @@ export interface User {
   username: string;
   jwt: string;
 }
+
+export interface LocationFilter {
+  name: string;
+  country: string;
+  meta: string;
+}

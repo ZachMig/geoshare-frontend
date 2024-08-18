@@ -2,8 +2,6 @@ currently working on:
 
 dont forget to make popup are u sure to delete location maybe idk
 
-redirect users who are not logged in
-
 refresh locationpreview same way as refreshing locations when myLists is reloaded, currently reloads on user switch at least
 also needs to refresh after location edit
 
@@ -12,3 +10,7 @@ return user data storage to localstorage for cross-tab access, and also remember
 make clicking away from edit location modal set is to invisible
 
 make clicking away from dropdowns close them
+
+make lists editable/deleteable
+
+in the public search, indicate who owns the searched lists
