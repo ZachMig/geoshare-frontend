@@ -3,9 +3,14 @@ import { Country, Meta, Location, LocationFilter } from "../types";
 import FilteredDropdown from "./FilteredDropdown";
 
 /**
- *
- *
- *
+ * Yes I made another Locations-type component instead of re-using MyLocations.tsx here. (Previously just Locations.tsx)
+ * There are different functionality and display requirements for locations that a user
+ *  has searched up versus ones that the user owns.
+ * I looked at what it would take to refactor MyLocations.tsx to handle both sets of
+ *  requirements, and decided it would be better to have two components instead.
+ * I would rather have two files with logic that is easy to read and follow. This also
+ *  allows me to more easily expand the specialized functionality of each component
+ *  separately in the future if I choose to add features.
  */
 
 interface PublicLocationsProps {

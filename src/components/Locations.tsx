@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Country, Location, LocationFilter, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../css/Locations.css";
+import "../css/MyLocations.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
@@ -9,7 +9,7 @@ import EditLocation from "./EditLocations";
 import FilteredDropdown from "./FilteredDropdown";
 import { Link } from "react-router-dom";
 
-interface LocationsProps {
+interface MyLocationsProps {
   locations: Location[] | null;
   selectedLocation: Location | null;
   metas: Meta[];
@@ -22,14 +22,14 @@ interface LocationsProps {
 //MAKE SURE THERE IS ALWAYS A VALID LIST WITH LOCATIONS OR APP WILL CRASH!!!
 
 //COMPONENT
-const Locations = ({
+const MyLocations = ({
   locations,
   selectedLocation,
   metas,
   countries,
   onSelectLocation,
   fetchLists,
-}: LocationsProps) => {
+}: MyLocationsProps) => {
   const auth = useAuth();
   const [filters, setFilters] = useState<LocationFilter>({
     meta: "",
@@ -188,4 +188,4 @@ const Locations = ({
   );
 };
 
-export default Locations;
+export default MyLocations;

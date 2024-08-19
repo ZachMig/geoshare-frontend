@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Country, List, Location, Meta } from "../types";
 import Lists from "./Lists";
-import Locations from "./Locations";
+import MyLocations from "./Locations";
 import LocationPreview from "./LocationPreview";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -61,7 +61,7 @@ const My = ({
         </div>
         <div className="col">
           {selectedLocations && metas && countries && (
-            <Locations
+            <MyLocations
               locations={selectedLocations}
               selectedLocation={selectedLocation}
               metas={metas}
