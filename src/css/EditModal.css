@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000; /* make sure popup is brought to the front */
 }
 
 .el-content {

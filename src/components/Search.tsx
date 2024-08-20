@@ -1,5 +1,5 @@
 import LocationPreview from "./LocationPreview";
-import Lists from "./Lists";
+import PublicLists from "./PublicLists";
 import { Country, List, Location, Meta } from "../types";
 import { useState } from "react";
 import PublicLocations from "./PublicLocations";
@@ -108,7 +108,7 @@ const Search = ({ countries, metas }: SearchProps) => {
           </div>
           {/* Lists */}
           {searchedLists && (
-            <Lists
+            <PublicLists
               allLists={searchedLists}
               selectedList={selectedList}
               onSelectList={onSelectList}
