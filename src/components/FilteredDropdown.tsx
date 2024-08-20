@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../css/FilteredItems.css";
 
 interface FilteredDropdownProps {
@@ -18,8 +18,26 @@ const FilteredDropdown = ({
   defaultPlaceholder,
   returnItemToParent,
 }: FilteredDropdownProps) => {
-  const [filter, setFilter] = useState("");
+  const ulRef = useRef<any>(null);
+  const inputRef = useRef<any>(null);
+  const [filter, setFilter] = useState(defaultPlaceholder);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleClickAway = (event: MouseEvent) => {
+    if (ulRef.current && inputRef.current.contains(event.target)) {
+      return;
+    }
+    if (ulRef.current && ulRef.current.contains(event.target)) {
+      return;
+    }
+    setDropdownOpen(false);
+  };
+
+  const handleEscAway = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setDropdownOpen(false);
+    }
+  };
 
   const filteredItems = items.filter((item) => {
     return filter ? item.toLowerCase().includes(filter.toLowerCase()) : true;
@@ -37,12 +55,22 @@ const FilteredDropdown = ({
     returnItemToParent(item);
   };
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickAway);
+    document.addEventListener("keydown", handleEscAway);
+    return () => {
+      document.removeEventListener("mousedown", handleClickAway);
+      document.removeEventListener("keydown", handleEscAway);
+    };
+  }, []);
+
   return (
     <div className="dropdown col-sm mx-1">
       <label htmlFor="country" className="form-label">
         {dropdownName}
       </label>
       <input
+        ref={inputRef}
         type="text"
         id="country"
         className="form-control"
@@ -52,7 +80,7 @@ const FilteredDropdown = ({
         value={filter}
       />
       {dropdownOpen && (
-        <ul className="list-group dropdown-menu show">
+        <ul ref={ulRef} className="list-group dropdown-menu show">
           {filteredItems.map((item) => (
             <li
               key={item}

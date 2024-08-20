@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Country, List, Location, Meta } from "../types";
-import Lists from "./Lists";
-import MyLocations from "./Locations";
+import MyLists from "./MyLists";
+import MyLocations from "./MyLocations";
 import LocationPreview from "./LocationPreview";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -50,16 +50,17 @@ const My = ({
 
     <div className="container-fluid mt-5 h-100">
       <div className="row">
-        <div className="col">
+        <div className="col" style={{ maxWidth: "30vw" }}>
           {myLists && (
-            <Lists
+            <MyLists
               allLists={myLists}
               selectedList={selectedList}
               onSelectList={onSelectList}
+              fetchLists={fetchLists}
             />
           )}
         </div>
-        <div className="col">
+        <div className="col" style={{ maxWidth: "30vw" }}>
           {selectedLocations && metas && countries && (
             <MyLocations
               locations={selectedLocations}
@@ -71,7 +72,7 @@ const My = ({
             />
           )}
         </div>
-        <div className="col">
+        <div className="col" style={{ maxWidth: "40vw" }}>
           {selectedLocation && <LocationPreview location={selectedLocation} />}
         </div>
       </div>

@@ -25,6 +25,12 @@ export interface LocInfo {
   listIDs: number[];
 }
 
+export interface ListInfo {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export interface Meta {
   id: number;
   name: string;

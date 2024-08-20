@@ -1,15 +1,27 @@
 import { List } from "../types";
+import ListDescription from "./ListDescription";
 
-interface ListsProps {
+/**
+ * ~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~~~~~~
+ * Please see PublicLocations.tsx for an explanation on why I decided to make this
+ *  a separate component from MyLists.tsx instead of keeping all the logic in one.
+ */
+
+interface PublicListsProps {
   allLists: List[];
   selectedList: List | null;
   onSelectList: (list: List) => void;
 }
 
-const Lists = ({ allLists, selectedList, onSelectList }: ListsProps) => {
+const PublicLists = ({
+  allLists,
+  selectedList,
+  onSelectList,
+}: PublicListsProps) => {
   return (
     <div style={{ maxHeight: "80vh" }}>
       <h4>Lists</h4>
+      <ListDescription list={selectedList} />
       <ul className="list-group">
         {allLists.map((list) => (
           <li
@@ -27,4 +39,4 @@ const Lists = ({ allLists, selectedList, onSelectList }: ListsProps) => {
   );
 };
 
-export default Lists;
+export default PublicLists;

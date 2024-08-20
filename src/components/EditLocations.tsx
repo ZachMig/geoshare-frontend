@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Country, LocInfo, Location, Meta } from "../types";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
-import "../css/EditLocation.css";
+import "../css/EditModal.css";
 import FilteredDropdown from "./FilteredDropdown";
 
 interface EditLocationProps {
@@ -10,7 +10,7 @@ interface EditLocationProps {
   countries: Country[];
   metas: Meta[];
   fetchLists: () => void;
-  setEditIsVisisble: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditLocation = ({
@@ -18,7 +18,7 @@ const EditLocation = ({
   countries,
   metas,
   fetchLists,
-  setEditIsVisisble,
+  setEditIsVisible,
 }: EditLocationProps) => {
   const auth = useAuth();
   const [updatedLocInfo, setUpdatedLocInfo] = useState<LocInfo>({
@@ -30,7 +30,33 @@ const EditLocation = ({
     userID: auth.user.id,
     listIDs: [],
   });
+  const editRef = useRef<any>(null);
   const [submitResponse, setSubmitResponse] = useState("");
+
+  const handleClickAway = (event: MouseEvent) => {
+    //make sure referenced element exists
+    if (editRef.current) {
+      //make sure click target is not referenced element
+      if (!editRef.current.contains(event.target)) {
+        setEditIsVisible(false);
+      }
+    }
+  };
+
+  const handleEscAway = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setEditIsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickAway);
+    document.addEventListener("keydown", handleEscAway);
+    return () => {
+      document.removeEventListener("mousedown", handleClickAway); //make sure event listener is being removed on unmount
+      document.removeEventListener("keydown", handleEscAway);
+    };
+  }, []);
 
   const url = "http://localhost:8080/api/locations/update";
 
@@ -92,7 +118,7 @@ const EditLocation = ({
   };
 
   const closeEditWindow = () => {
-    setEditIsVisisble(false);
+    setEditIsVisible(false);
   };
 
   const handleCountryChange = (selectedCountry: string) => {
@@ -105,10 +131,11 @@ const EditLocation = ({
 
   return (
     <div className="el-overlay">
-      <div className="el-content">
+      <div ref={editRef} className="el-content">
+        <h4>Edit Location</h4>
         <span>{submitResponse}</span>
         <form onSubmit={handleSubmit} className="mt-3 mx-auto">
-          {/*Url*/}
+          {/* Url */}
           <div className="row mt-2">
             <label htmlFor="url" className="form-label">
               Street View URL
@@ -125,7 +152,7 @@ const EditLocation = ({
               required
             />
           </div>
-          {/*Description*/}
+          {/* Description */}
           <div className="row mt-2">
             <label htmlFor="desc" className="form-label">
               Description
@@ -145,7 +172,7 @@ const EditLocation = ({
               required
             />
           </div>
-          {/*Country*/}
+          {/* Country */}
           <div className="row mt-2">
             <FilteredDropdown
               dropdownName="Country"
@@ -153,7 +180,7 @@ const EditLocation = ({
               defaultPlaceholder={location.countryName}
               returnItemToParent={handleCountryChange}
             />
-            {/*Meta*/}
+            {/* Meta */}
             <FilteredDropdown
               dropdownName="Meta"
               items={metas.map((meta) => meta.name)}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Country, Location, LocationFilter, Meta } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/MyLocations.css";
+import "../css/FaIcons.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
@@ -104,6 +105,7 @@ const MyLocations = ({
     );
   }
 
+  //TSX RETURN
   return (
     <div>
       {/* Edit Location Modal */}
@@ -113,7 +115,7 @@ const MyLocations = ({
           metas={metas}
           location={selectedLocation}
           fetchLists={fetchLists}
-          setEditIsVisisble={setIsEditVisible}
+          setEditIsVisible={setIsEditVisible}
         />
       )}
       {/* Filters */}
@@ -124,7 +126,7 @@ const MyLocations = ({
             className="form-control"
             type="text"
             placeholder="Name"
-            value={filters.name}
+            value={filters.name ? filters.name : filters.name} //Populate with filter if it exists, avoids some edge case bugs
             onChange={(e) => setFilters({ ...filters, name: e.target.value })}
           />
         </div>
@@ -132,14 +134,16 @@ const MyLocations = ({
         <FilteredDropdown
           dropdownName=""
           items={countries.map((country) => country.name)}
-          defaultPlaceholder={countries[0].name}
+          defaultPlaceholder={
+            filters.country ? filters.country : countries[0].name
+          }
           returnItemToParent={handleCountrySelect}
         />
         {/* Meta Filter */}
         <FilteredDropdown
           dropdownName=""
           items={metas.map((meta) => meta.name)}
-          defaultPlaceholder={metas[0].name}
+          defaultPlaceholder={filters.meta ? filters.meta : metas[0].name}
           returnItemToParent={handleMetaSelect}
         />
       </div>

@@ -1,0 +1,9 @@
+.list-holder {
+  max-width: 100%;
+  /* white-space: nowrap */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Replace this all later with maybe a hover-over description stub that expands on hover to
+show full descrtiption, so not have to worry about length, truncating, all this crap. */
