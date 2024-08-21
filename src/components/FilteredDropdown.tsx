@@ -4,7 +4,8 @@ import "../css/FilteredItems.css";
 interface FilteredDropdownProps {
   dropdownName: string;
   items: string[];
-  defaultPlaceholder: string;
+  //defaultPlaceholder: string;
+  defaultFilter: string;
   returnItemToParent: (item: string) => void;
 }
 
@@ -15,12 +16,12 @@ interface FilteredDropdownProps {
 const FilteredDropdown = ({
   dropdownName,
   items,
-  defaultPlaceholder,
+  defaultFilter,
   returnItemToParent,
 }: FilteredDropdownProps) => {
   const ulRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
-  const [filter, setFilter] = useState(defaultPlaceholder);
+  const [filter, setFilter] = useState(defaultFilter);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleClickAway = (event: MouseEvent) => {
@@ -74,7 +75,7 @@ const FilteredDropdown = ({
         type="text"
         id="country"
         className="form-control"
-        placeholder={defaultPlaceholder}
+        placeholder={items[0]}
         onClick={() => setDropdownOpen(!dropdownOpen)}
         onChange={handleItemChange}
         value={filter}

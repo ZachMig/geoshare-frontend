@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { List } from "../types";
+import { Actionable, Handlers, List } from "../types";
 import EditList from "./EditList";
-import { FaEdit } from "react-icons/fa";
-import "../css/FaIcons.css";
 import "../css/Lists.css";
 import ListDescription from "./ListDescription";
+import { useAuth } from "../hooks/useAuth";
+import axios from "axios";
+import ActionIcons from "./ActionIcons";
 
 interface MyListsProps {
   allLists: List[];
@@ -19,11 +20,45 @@ const MyLists = ({
   onSelectList,
   fetchLists,
 }: MyListsProps) => {
+  const auth = useAuth();
   const [isEditVisible, setIsEditVisible] = useState(false);
 
-  const handleListEdit = (list: List) => {
+  const handleListEdit = () => {
+    if (!selectedList) {
+      console.error("Attempted to edit list with no list selected.");
+      return;
+    }
     setIsEditVisible(true);
-    console.log("Edit clicked for list: " + list.name);
+    console.log("Edit clicked for list: " + selectedList.name);
+  };
+
+  const handleListDelete = async (list: Actionable) => {
+    if (!selectedList) {
+      console.error("Attempted to delete list with no list selected.");
+      return;
+    }
+    console.log("Delete clicked for list: " + list.id);
+
+    const url = `http://localhost:8080/api/lists/delete?listid=${list.id}`;
+
+    const config = {
+      headers: { Authorization: "Bearer " + auth.user.jwt },
+    };
+
+    try {
+      const response = await axios.delete(url, config);
+      console.log("Delete request ran with no errors. " + response.data);
+    } catch (error) {
+      console.error("Error deleting list: " + error);
+    }
+
+    fetchLists();
+  };
+
+  const handlers: Handlers = {
+    handleEdit: handleListEdit,
+    handleUnlink: null,
+    handleDelete: handleListDelete,
   };
 
   return (
@@ -47,16 +82,10 @@ const MyLists = ({
             style={{ cursor: "pointer" }}
           >
             {list.name.length > 60 ? list.name.slice(0, 60) + "..." : list.name}
-            <div className="icon-group">
-              {" "}
-              {/* Edit Location Button */}
-              <FaEdit
-                className="icon"
-                onClick={() => handleListEdit(list)}
-                title="Edit"
-                style={{ marginLeft: "10px", cursor: "pointer" }}
-              />
-            </div>
+
+            {list.id != -1 && (
+              <ActionIcons item={list} showUnlink={false} handlers={handlers} />
+            )}
           </li>
         ))}
       </ul>

@@ -1,21 +1,30 @@
 import { useState } from "react";
-import { Country, Location, LocationFilter, Meta } from "../types";
+import {
+  Actionable,
+  Country,
+  Handlers,
+  List,
+  Location,
+  LocationFilter,
+  Meta,
+} from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/MyLocations.css";
-import "../css/FaIcons.css";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import EditLocation from "./EditLocations";
 import FilteredDropdown from "./FilteredDropdown";
 import { Link } from "react-router-dom";
+import ActionIcons from "./ActionIcons";
 
 interface MyLocationsProps {
+  selectedList: List;
   locations: Location[] | null;
   selectedLocation: Location | null;
   metas: Meta[];
   countries: Country[];
   onSelectLocation: (location: Location | null) => void;
+  unlinkLocation: (location: Actionable) => void;
   fetchLists: () => {};
 }
 
@@ -24,11 +33,13 @@ interface MyLocationsProps {
 
 //COMPONENT
 const MyLocations = ({
+  selectedList,
   locations,
   selectedLocation,
   metas,
   countries,
   onSelectLocation,
+  unlinkLocation,
   fetchLists,
 }: MyLocationsProps) => {
   const auth = useAuth();
@@ -48,27 +59,36 @@ const MyLocations = ({
     setFilters({ ...filters, meta: meta });
   };
 
-  const handleLocationDelete = async (location: Location) => {
-    //kill it
+  //EDIT
+  const handleLocationEdit = (location: Actionable) => {
+    // if (!selectedLocation) {
+    //   console.error("Attempted to edit with no selected location.");
+    //   return;
+    // }
+
+    console.log("Edit clicked for location: " + location.id);
+    setIsEditVisible(true);
+  };
+
+  //UNLINK
+  const handleLocationUnlink = (location: Actionable) => {
+    unlinkLocation(location);
+  };
+
+  //DELETE
+  const handleLocationDelete = async (location: Actionable) => {
     const deleteUrl = "http://localhost:8080/api/locations/delete";
     try {
       const response = await axios.delete(deleteUrl, {
         data: [location.id],
-        headers: { Authorization: "Bearer " + auth?.user?.jwt },
+        headers: { Authorization: "Bearer " + auth.user.jwt },
       });
       console.log("Delete request ran with no errors. " + response.data);
       fetchLists();
       onSelectLocation(null); // TODO find a better way to reset locaionPreview here
     } catch (error) {
-      console.error(
-        "Error deleting location: " + location.description + " - " + error
-      );
+      console.error("Error deleting location: " + location.id + " - " + error);
     }
-  };
-
-  const handleLocationEdit = (location: Location) => {
-    console.log("Edit clicked for location: " + location.description);
-    setIsEditVisible(true);
   };
 
   //Maintain the subset of locations that match all current filters, extremely readable versionwwww
@@ -77,7 +97,7 @@ const MyLocations = ({
     locations.filter((location: Location) => {
       // If the filter is populated, return true if it matches, otherwise if no match or not populated return false
       // This is pretty hard to read if unfamiliar and should probably be written without ternary operators in the workplace
-      // I rewrote it a little nicer in PublicLocations.tsx
+      // I rewrote it a little more readable in PublicLocations.tsx
       const nameMatches = filters.name
         ? location.description
             .toLowerCase()
@@ -94,6 +114,7 @@ const MyLocations = ({
       return nameMatches && countryMatches && metaMatches;
     });
 
+  //RETURN IF NO LOCATIONS
   if (locations && locations.length == 0) {
     return (
       <div className="row px-4 mt-5 d-flex align-items-end">
@@ -104,6 +125,12 @@ const MyLocations = ({
       </div>
     );
   }
+
+  const handlers: Handlers = {
+    handleEdit: handleLocationEdit,
+    handleUnlink: handleLocationUnlink,
+    handleDelete: handleLocationDelete,
+  };
 
   //TSX RETURN
   return (
@@ -134,16 +161,14 @@ const MyLocations = ({
         <FilteredDropdown
           dropdownName=""
           items={countries.map((country) => country.name)}
-          defaultPlaceholder={
-            filters.country ? filters.country : countries[0].name
-          }
+          defaultFilter={filters.country ? filters.country : ""}
           returnItemToParent={handleCountrySelect}
         />
         {/* Meta Filter */}
         <FilteredDropdown
           dropdownName=""
           items={metas.map((meta) => meta.name)}
-          defaultPlaceholder={filters.meta ? filters.meta : metas[0].name}
+          defaultFilter={filters.meta ? filters.meta : ""}
           returnItemToParent={handleMetaSelect}
         />
       </div>
@@ -169,22 +194,12 @@ const MyLocations = ({
                 ? location.description.slice(0, 80)
                 : location.description}
               {/* Action Buttons */}
-              <div className="icon-group">
-                {/* Edit Location Button */}
-                <FaEdit
-                  className="icon"
-                  onClick={() => handleLocationEdit(location)}
-                  title="Edit"
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                />
-                {/* Delete Location Button */}
-                <FaTrash
-                  className="icon"
-                  onClick={() => handleLocationDelete(location)}
-                  title="Delete"
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                />
-              </div>
+
+              <ActionIcons
+                item={location}
+                showUnlink={selectedList.id != -1}
+                handlers={handlers}
+              />
             </li>
           ))}
       </ul>

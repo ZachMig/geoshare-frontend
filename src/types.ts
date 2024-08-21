@@ -1,4 +1,8 @@
-export interface List {
+export interface Actionable {
+  id: number;
+}
+
+export interface List extends Actionable {
   id: number;
   name: string;
   description: string;
@@ -51,4 +55,10 @@ export interface LocationFilter {
   name: string;
   country: string;
   meta: string;
+}
+
+export interface Handlers {
+  handleEdit: (item: Actionable) => void;
+  handleUnlink: null | ((item: Actionable) => void);
+  handleDelete: (item: Actionable) => void;
 }

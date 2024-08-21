@@ -106,11 +106,11 @@ const CreateLocation = ({
     }
   };
 
-  //Return TSX
+  //Return TSX ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   return (
-    <div>
+    <div className="mx-2">
       <span>{submitResponse}</span>
-      <form onSubmit={handleSubmit} className="mt-3 mx-auto">
+      <form onSubmit={handleSubmit} className="mt-3">
         {/*Url*/}
         <div className="mt-2">
           <label htmlFor="url" className="form-label">
@@ -144,18 +144,18 @@ const CreateLocation = ({
           />
         </div>
         {/*Country*/}
-        <div className="row mt-2">
+        <div className="row mt-2 mx-auto">
           <FilteredDropdown
             dropdownName="Country"
             items={countryNames}
-            defaultPlaceholder={countryNames[0]}
+            defaultFilter={""}
             returnItemToParent={handleCountryChange}
           />
           {/*Meta*/}
           <FilteredDropdown
             dropdownName="Meta"
             items={metaNames}
-            defaultPlaceholder={metaNames[0]}
+            defaultFilter={""}
             returnItemToParent={handleMetaChange}
           />
         </div>

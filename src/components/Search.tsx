@@ -84,10 +84,10 @@ const Search = ({ countries, metas }: SearchProps) => {
 
   return (
     <div className="container-fluid mt-5 h-100">
-      <div className="row">
+      <div className="row ">
         <div className="col" style={{ maxWidth: "30vw" }}>
           {/* Search by Username or List Name */}
-          <div className="row">
+          <div className="row mt-3">
             <span>{searchResponse}</span>
             <form className="d-flex my-1" onSubmit={searchLists}>
               <input

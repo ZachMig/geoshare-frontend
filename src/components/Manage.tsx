@@ -18,7 +18,7 @@ const Manage = ({ countries, metas, myLists, fetchLists }: ManageProps) => {
     <div className="row mt-5">
       <div className="col-4">
         <div className="row">
-          <h4 className="mt-3">Create New Location </h4>
+          <h4 className="mt-3 ms-1">Create New Location </h4>
           <CreateLocation
             countries={countries}
             metas={metas}
@@ -27,7 +27,7 @@ const Manage = ({ countries, metas, myLists, fetchLists }: ManageProps) => {
           />
         </div>
         <div className="row">
-          <h4 className="mt-3">Create New List</h4>
+          <h4 className="mt-3 ms-1">Create New List</h4>
           <CreateList fetchLists={fetchLists} />
         </div>
       </div>
