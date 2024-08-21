@@ -1,5 +1,13 @@
 dont forget to:
 
+
+**********
+move selectedLocation back into wherever the actions where the delete is called because it's deleting the wrong location becasue sync 
+**********
+^^ still working on this
+
+also some lists are not being marked unlisted correctly after unlink requests
+
 make popup are u sure to delete location maybe idk
 
 refresh locationpreview same way as refreshing locations when myLists is reloaded, currently reloads on user switch at least
@@ -7,14 +15,12 @@ also needs to refresh after location edit
 
 return user data storage to localstorage for cross-tab access, and also remember to clear it on logout() call
 
-make lists editable/deleteable
-
-in the public search, indicate who owns the searched lists
+in the public search, indicate who owns the searched lists?
 
 BUG? user auth state can persist from last session but new instance of spring app? shouldn't be relevant in prod I think
 
-maybe look at filtereddropdown placeholder looking like real value
-
 make new list search clear selectedList, etc
+
+add field to location table to track how many lists it belongs to, so we can easily check if a location needs to be marked unlisted
 
 turn off strict mode when project finished

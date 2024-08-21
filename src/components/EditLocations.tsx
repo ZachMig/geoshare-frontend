@@ -177,14 +177,14 @@ const EditLocation = ({
             <FilteredDropdown
               dropdownName="Country"
               items={countries.map((country) => country.name)}
-              defaultPlaceholder={location.countryName}
+              defaultFilter={location.countryName}
               returnItemToParent={handleCountryChange}
             />
             {/* Meta */}
             <FilteredDropdown
               dropdownName="Meta"
               items={metas.map((meta) => meta.name)}
-              defaultPlaceholder={location.meta}
+              defaultFilter={location.meta}
               returnItemToParent={handleMetaChange}
             />
           </div>

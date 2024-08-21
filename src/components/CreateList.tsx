@@ -63,9 +63,9 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
     }
   };
 
-  //Return TSX
+  //Return TSX ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   return (
-    <div>
+    <div className="mx-2">
       <span>{submitResponse}</span>
       <form onSubmit={handleSubmit} className="mt-2 mx-auto">
         <div className="mt-2">

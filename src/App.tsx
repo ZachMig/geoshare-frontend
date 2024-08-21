@@ -88,6 +88,7 @@ function App() {
     } catch (error) {
       console.error("Error loading user lists: ", error);
     }
+    setDefaultList();
   };
 
   const onSelectList = (list: List | null) => {
