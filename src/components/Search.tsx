@@ -85,7 +85,7 @@ const Search = ({ countries, metas }: SearchProps) => {
   return (
     <div className="container-fluid mt-5 h-100">
       <div className="row">
-        <div className="col">
+        <div className="col" style={{ maxWidth: "30vw" }}>
           {/* Search by Username or List Name */}
           <div className="row">
             <span>{searchResponse}</span>

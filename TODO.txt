@@ -15,4 +15,6 @@ BUG? user auth state can persist from last session but new instance of spring ap
 
 maybe look at filtereddropdown placeholder looking like real value
 
+make new list search clear selectedList, etc
+
 turn off strict mode when project finished
