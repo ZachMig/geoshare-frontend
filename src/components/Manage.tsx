@@ -1,6 +1,7 @@
 import { Country, List, Meta } from "../types";
 import CreateList from "./CreateList";
 import CreateLocation from "./CreateLocation";
+import LinkLocations from "./LinkLocations";
 
 interface ManageProps {
   countries: Country[];
@@ -31,8 +32,15 @@ const Manage = ({ countries, metas, myLists, fetchLists }: ManageProps) => {
           <CreateList fetchLists={fetchLists} />
         </div>
       </div>
-      <div className="col-4">Col</div>
-      <div className="col-4">Col</div>
+      <div className="col-8">
+        <h4 className="mt-3">Link or Unlink Locations to/from a List</h4>
+        <LinkLocations
+          countries={countries}
+          metas={metas}
+          myLists={myLists}
+          fetchLists={fetchLists}
+        />
+      </div>
     </div>
   );
 };

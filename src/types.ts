@@ -8,9 +8,10 @@ export interface List extends Actionable {
   description: string;
   isPublic: boolean;
   locations: Location[];
+  toString(): string;
 }
 
-export interface Location {
+export interface Location extends Actionable {
   id: number;
   url: string;
   description: string;

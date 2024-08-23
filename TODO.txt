@@ -1,12 +1,10 @@
 dont forget to:
 
-
 **********
 move selectedLocation back into wherever the actions where the delete is called because it's deleting the wrong location becasue sync 
+still working on this
+Ok maybe it's fixed just leaving this here so I can try to break it more later
 **********
-^^ still working on this
-
-also some lists are not being marked unlisted correctly after unlink requests
 
 make popup are u sure to delete location maybe idk
 
@@ -19,8 +17,8 @@ in the public search, indicate who owns the searched lists?
 
 BUG? user auth state can persist from last session but new instance of spring app? shouldn't be relevant in prod I think
 
-make new list search clear selectedList, etc
-
 add field to location table to track how many lists it belongs to, so we can easily check if a location needs to be marked unlisted
+
+figure out a good way to do sorting of displayed lists/locations? date?
 
 turn off strict mode when project finished

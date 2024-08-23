@@ -84,6 +84,7 @@ function App() {
       );
 
       const fetchedLists: List[] = response.data;
+
       setMyLists(fetchedLists);
     } catch (error) {
       console.error("Error loading user lists: ", error);
@@ -109,6 +110,7 @@ function App() {
   };
 
   const onSelectLocation = (location: Location | null) => {
+    console.log("setting location: " + location?.description);
     setSelectedLocation(location);
   };
 
