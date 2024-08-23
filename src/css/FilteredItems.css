@@ -5,6 +5,8 @@ input {
 
 .dropdown-menu {
   --bs-dropdown-padding-y: 0rem !important;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .col-sm {

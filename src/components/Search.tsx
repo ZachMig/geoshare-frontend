@@ -21,7 +21,6 @@ const Search = ({ countries, metas }: SearchProps) => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
-
   const onSelectList = (list: List) => {
     setSelectedList(list);
     //set lists locations as selected
@@ -39,8 +38,14 @@ const Search = ({ countries, metas }: SearchProps) => {
   const searchBy = searchByUsername ? "Username" : "List Name";
   const searchByButton = searchByUsername ? "User Search" : "List Search";
 
+  //SEARCH FOR LISTS BY USER OR NAME
+  //DOESN'T SHOW EMPTY LISTS
   const searchLists = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setSelectedList(null);
+    setSelectedLocations([]);
+    setSelectedLocation(null);
 
     let url = "";
 
@@ -52,7 +57,11 @@ const Search = ({ countries, metas }: SearchProps) => {
 
     try {
       const response = await axios.get(url);
-      const temp: List[] = response.data;
+      //Filter out empty lists
+      const temp: List[] = response.data.filter(
+        (l: List) => l && l.locations.length > 0
+      );
+      // temp.forEach((l) => console.log(l.description));
       setSearchedLists(temp);
       if (
         temp.length === 0 ||

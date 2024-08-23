@@ -91,14 +91,14 @@ const PublicLocations = ({
         <FilteredDropdown
           dropdownName=""
           items={countries.map((country) => country.name)}
-          defaultFilter={filters.country ? filters.country : countries[0].name}
+          defaultFilter={filters.country ? filters.country : ""}
           returnItemToParent={handleCountrySelect}
         />
         {/* Meta Filter */}
         <FilteredDropdown
           dropdownName=""
           items={metas.map((meta) => meta.name)}
-          defaultFilter={filters.meta ? filters.meta : metas[0].name}
+          defaultFilter={filters.meta ? filters.meta : ""}
           returnItemToParent={handleMetaSelect}
         />
       </div>

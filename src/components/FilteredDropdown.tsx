@@ -3,10 +3,10 @@ import "../css/FilteredItems.css";
 
 interface FilteredDropdownProps {
   dropdownName: string;
-  items: string[];
+  items: any[];
   //defaultPlaceholder: string;
-  defaultFilter: string;
-  returnItemToParent: (item: string) => void;
+  defaultFilter: any;
+  returnItemToParent: (item: any) => void;
 }
 
 /**
@@ -21,7 +21,7 @@ const FilteredDropdown = ({
 }: FilteredDropdownProps) => {
   const ulRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
-  const [filter, setFilter] = useState(defaultFilter);
+  const [filter, setFilter] = useState(defaultFilter.toString());
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleClickAway = (event: MouseEvent) => {
@@ -41,7 +41,9 @@ const FilteredDropdown = ({
   };
 
   const filteredItems = items.filter((item) => {
-    return filter ? item.toLowerCase().includes(filter.toLowerCase()) : true;
+    return filter
+      ? item.toString().toLowerCase().includes(filter.toString().toLowerCase())
+      : true;
   });
 
   const handleItemChange = (e: any) => {
@@ -50,7 +52,7 @@ const FilteredDropdown = ({
     returnItemToParent(e.target.value);
   };
 
-  const handleItemSelect = (item: string) => {
+  const handleItemSelect = (item: any) => {
     setFilter(item);
     setDropdownOpen(false);
     returnItemToParent(item);
@@ -67,15 +69,12 @@ const FilteredDropdown = ({
 
   return (
     <div className="dropdown col-sm mx-1">
-      <label htmlFor="country" className="form-label">
-        {dropdownName}
-      </label>
+      <label className="form-label">{dropdownName}</label>
       <input
         ref={inputRef}
         type="text"
-        id="country"
         className="form-control"
-        placeholder={items[0]}
+        placeholder={items[0].toString()}
         onClick={() => setDropdownOpen(!dropdownOpen)}
         onChange={handleItemChange}
         value={filter}
@@ -88,7 +87,7 @@ const FilteredDropdown = ({
               className="list-group-item list-group-item-action"
               onClick={() => handleItemSelect(item)}
             >
-              {item}
+              {item.toString()}
             </li>
           ))}
         </ul>

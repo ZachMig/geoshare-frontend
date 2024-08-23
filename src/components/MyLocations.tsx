@@ -9,7 +9,6 @@ import {
   Meta,
 } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../css/MyLocations.css";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import EditLocation from "./EditLocations";
