@@ -19,7 +19,7 @@ const PublicLists = ({
   onSelectList,
 }: PublicListsProps) => {
   return (
-    <div style={{ maxHeight: "80vh" }}>
+    <div style={{ maxHeight: "80vh", overflow: "auto" }}>
       <h4>Lists</h4>
       <ListDescription list={selectedList} />
       <ul className="list-group">

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Country, List, Location, LocationFilter, Meta } from "../types";
 import FilteredDropdown from "./FilteredDropdown";
+import { useAuth } from "../hooks/useAuth";
+import axios from "axios";
 
 interface LinkLocationsProps {
   countries: Country[];
@@ -15,6 +17,7 @@ const LinkLocations = ({
   myLists,
   fetchLists,
 }: LinkLocationsProps) => {
+  const auth = useAuth();
   const [selectedList, setSelectedList] = useState<List | null>(null);
   const [allLocations, setAllLocations] = useState<Location[]>([]);
   const [inLocations, setInLocations] = useState(new Map<number, Location>());
@@ -115,6 +118,7 @@ const LinkLocations = ({
   //Set or Reset all locations on list change or mount
   useEffect(() => {
     if (selectedList && selectedList.locations) {
+      //Create maps of location id -> location to ensure uniqueness
       const asyncHateInLocations = new Map<number, Location>(
         selectedList.locations.map((loc) => [loc.id, loc])
       );
@@ -174,8 +178,48 @@ const LinkLocations = ({
 
   //SUBMIT LINK/UNLINK API CALLS
   const handleSwapSubmit = async () => {
-    //addLocationsTo...
-    //unlinkLocationsFrom...
+    console.log("Submit clicked!");
+    if (!selectedList) {
+      console.error("Attempted to swap with no selected list.");
+      return;
+    }
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + auth.user.jwt,
+      },
+    };
+
+    //Link locations if any have been selected
+    if (locationsToLink.size > 0) {
+      const url = `http://localhost:8080/api/lists/add?listid=${selectedList.id}`;
+
+      try {
+        const response = await axios.put(url, [...locationsToLink], config);
+        console.log("Link locations handled successfully. " + response.data);
+      } catch (error) {
+        console.error("Error linking locations to list. " + error);
+        return;
+      }
+    }
+
+    //Unlink locations if any have been selected
+    if (locationsToUnlink.size > 0) {
+      const url = `http://localhost:8080/api/lists/unlink?listid=${selectedList.id}`;
+
+      try {
+        const response = await axios.put(url, [...locationsToUnlink], config);
+        console.log("Unlink locations handled successfully. " + response.data);
+      } catch (error) {
+        console.error("Error unlinking locations from list. " + error);
+        return;
+      }
+    }
+
+    //Reset relevant state here
+    setLocationsToLink(new Set());
+    setLocationsToUnlink(new Set());
     fetchLists();
   };
 
@@ -198,7 +242,7 @@ const LinkLocations = ({
         <div className="col-2">
           <button
             type="submit"
-            onSubmit={handleSwapSubmit}
+            onClick={handleSwapSubmit}
             className="btn btn-primary"
           >
             Submit Changes

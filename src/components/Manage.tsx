@@ -33,7 +33,7 @@ const Manage = ({ countries, metas, myLists, fetchLists }: ManageProps) => {
         </div>
       </div>
       <div className="col-8">
-        <h4 className="mt-3">Link or Unlink Locations to/from a List</h4>
+        <h4 className="mt-3 ms-1">Link or Unlink Locations to/from a List</h4>
         <LinkLocations
           countries={countries}
           metas={metas}
