@@ -13,6 +13,7 @@ interface AuthContext {
 const defaultUser: User = {
   id: -1,
   username: "",
+  email: "",
   jwt: "",
 };
 
@@ -61,10 +62,10 @@ function useProvideAuth() {
           "content-type": "application/json",
         },
       });
-      const { jwt, userID: id } = response.data;
+      const { jwt, userID: id, email } = response.data;
       console.log("getToken response");
 
-      const user: User = { id, username, jwt };
+      const user: User = { id, username, email, jwt };
       setUser(user);
       setIsLoggedIn(true);
 
