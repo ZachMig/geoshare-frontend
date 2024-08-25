@@ -49,6 +49,7 @@ export interface Country {
 export interface User {
   id: number;
   username: string;
+  email: string;
   jwt: string;
 }
 

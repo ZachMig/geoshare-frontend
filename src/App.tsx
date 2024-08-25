@@ -47,6 +47,14 @@ function App() {
         setSelectedLocations(refreshedList.locations);
         return;
       }
+
+      // if (refreshedList && refreshedList.locations.length > 0) {
+      //   setSelectedList(() => ({
+      //     ...refreshedList,
+      //   }));
+      //   setSelectedLocations(() => [...refreshedList.locations]);
+      //   return;
+      // }
     }
 
     //If no list selected yet, find one to default to
