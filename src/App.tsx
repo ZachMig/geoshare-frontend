@@ -25,7 +25,7 @@ function App() {
   );
 
   //Set Default Selected List
-  const setDefaultList = () => {
+  const setDefaults = () => {
     console.log("Running default list setter.");
     //Don't run if lists are not loaded yet
     if (!myLists) {
@@ -37,24 +37,29 @@ function App() {
     // list in the refreshed myLists of the same id, and set that
     //If not found then that list was deleted, so find a new default list below
     if (selectedList) {
-      console.log("already list");
-
       const refreshedList = myLists.find((list) => list.id === selectedList.id);
 
       //Make sure this list hasn't been deleted since last check and actually has locations
       if (refreshedList && refreshedList.locations.length > 0) {
         setSelectedList(refreshedList);
         setSelectedLocations(refreshedList.locations);
+
+        //Check if there is already a selected Location
+        if (selectedLocation) {
+          const refreshedLocation = refreshedList.locations.find(
+            (location) => location.id === selectedLocation.id
+          );
+
+          //Check if the selected Location still exists and re-set it
+          if (refreshedLocation) {
+            setSelectedLocation(refreshedLocation);
+          } else {
+            setSelectedLocation(refreshedList.locations[0]);
+          }
+        }
+        //Return if we found the selected list still existing, otherwise go to next logic
         return;
       }
-
-      // if (refreshedList && refreshedList.locations.length > 0) {
-      //   setSelectedList(() => ({
-      //     ...refreshedList,
-      //   }));
-      //   setSelectedLocations(() => [...refreshedList.locations]);
-      //   return;
-      // }
     }
 
     //If no list selected yet, find one to default to
@@ -64,15 +69,25 @@ function App() {
     const firstPopulatedList = myLists.find(
       (list) => list.locations.length > 0
     );
-    console.log(firstPopulatedList + " first pop");
     //If we found a list with any number of locations > 0
     if (firstPopulatedList) {
+      //Set the selected List
       setSelectedList(firstPopulatedList);
+
+      //Set the selected Locations
       setSelectedLocations(firstPopulatedList.locations);
+
+      //Set the selected Location
+      if (firstPopulatedList.locations.length > 0) {
+        setSelectedLocation(firstPopulatedList.locations[0]);
+      } else {
+        setSelectedLocation(null);
+      }
     } else {
-      //No lists with locations found so set to empty array
+      //No lists with locations found so set to unlisted and empty array and null
       setSelectedList(myLists[0]);
       setSelectedLocations([]);
+      setSelectedLocation(null);
     }
   };
 
@@ -97,7 +112,7 @@ function App() {
     } catch (error) {
       console.error("Error loading user lists: ", error);
     }
-    setDefaultList();
+    setDefaults();
   };
 
   const onSelectList = (list: List | null) => {
@@ -113,7 +128,7 @@ function App() {
       }
     } else {
       //probably being called off of a list delete command so find a new default list
-      setDefaultList();
+      setDefaults();
     }
   };
 
@@ -149,7 +164,7 @@ function App() {
   }, [auth.user]);
 
   useEffect(() => {
-    setDefaultList();
+    setDefaults();
   }, [myLists]);
 
   useEffect(() => {

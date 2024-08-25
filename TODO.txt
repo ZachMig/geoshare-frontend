@@ -8,9 +8,6 @@ Ok maybe it's fixed just leaving this here so I can try to break it more later
 
 make popup are u sure to delete location maybe idk
 
-refresh locationpreview same way as refreshing locations when myLists is reloaded, currently reloads on user switch at least
-also needs to refresh after location edit
-
 return user data storage to localstorage for cross-tab access, and also remember to clear it on logout() call
 
 in the public search, indicate who owns the searched lists?
