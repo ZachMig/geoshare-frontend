@@ -1,3 +1,10 @@
 # geoshare-frontend
 Frontend for geoshare-backend repo.
-Better description coming when everything is done thanks for your patience.
+
+Going live soon at www.geosave.org.
+
+Libraries/Tools/Languages Used:
+TypeScript
+React.js
+Axios
+Bootstrap
