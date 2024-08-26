@@ -2,11 +2,14 @@ export interface Actionable {
   id: number;
 }
 
-export interface List extends Actionable {
+export interface Stringable {
+  toString(): string;
+}
+
+export interface List extends Actionable, Stringable {
   id: number;
   name: string;
   description: string;
-  isPublic: boolean;
   locations: Location[];
   toString(): string;
 }
@@ -36,12 +39,12 @@ export interface ListInfo {
   description: string;
 }
 
-export interface Meta {
+export interface Meta extends Stringable {
   id: number;
   name: string;
 }
 
-export interface Country {
+export interface Country extends Stringable {
   id: number;
   name: string;
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Country, Meta, Location, LocationFilter } from "../types";
+import { Country, Meta, Location, LocationFilter, Stringable } from "../types";
 import FilteredDropdown from "./FilteredDropdown";
 
 /**
@@ -34,12 +34,12 @@ const PublicLocations = ({
     name: "",
   });
 
-  const handleCountrySelect = (country: string) => {
-    setFilters({ ...filters, country: country });
+  const handleCountrySelect = (country: Stringable) => {
+    setFilters({ ...filters, country: country.toString() });
   };
 
-  const handleMetaSelect = (meta: string) => {
-    setFilters({ ...filters, meta: meta });
+  const handleMetaSelect = (meta: Stringable) => {
+    setFilters({ ...filters, meta: meta.toString() });
   };
 
   /**
@@ -76,6 +76,7 @@ const PublicLocations = ({
   return (
     <div>
       {/* Filters */}
+
       <div className="row mb-2 d-flex align-items-end">
         {/* Location Name Filter */}
         <div className="col-sm mx-1">
@@ -87,21 +88,26 @@ const PublicLocations = ({
             onChange={(e) => setFilters({ ...filters, name: e.target.value })}
           />
         </div>
+
         {/* Country Filter */}
         <FilteredDropdown
           dropdownName=""
           items={countries.map((country) => country.name)}
           defaultFilter={filters.country ? filters.country : ""}
+          defaultValue={""}
           returnItemToParent={handleCountrySelect}
         />
+
         {/* Meta Filter */}
         <FilteredDropdown
           dropdownName=""
           items={metas.map((meta) => meta.name)}
           defaultFilter={filters.meta ? filters.meta : ""}
+          defaultValue={""}
           returnItemToParent={handleMetaSelect}
         />
       </div>
+
       {/* Filtered Locations */}
       <ul
         className="list-group"

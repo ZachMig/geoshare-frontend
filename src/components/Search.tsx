@@ -125,7 +125,7 @@ const Search = ({ countries, metas }: SearchProps) => {
           )}
         </div>
         {/* Locations */}
-        <div className="col">
+        <div className="col" style={{ minHeight: "300px" }}>
           {selectedLocations && metas && countries && (
             <PublicLocations
               locations={selectedLocations}

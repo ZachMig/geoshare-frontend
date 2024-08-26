@@ -7,6 +7,7 @@ import {
   Location,
   LocationFilter,
   Meta,
+  Stringable,
 } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
@@ -50,12 +51,12 @@ const MyLocations = ({
 
   const [isEditVisible, setIsEditVisible] = useState(false);
 
-  const handleCountrySelect = (country: string) => {
-    setFilters({ ...filters, country: country });
+  const handleCountrySelect = (country: Stringable) => {
+    setFilters({ ...filters, country: country.toString() });
   };
 
-  const handleMetaSelect = (meta: string) => {
-    setFilters({ ...filters, meta: meta });
+  const handleMetaSelect = (meta: Stringable) => {
+    setFilters({ ...filters, meta: meta.toString() });
   };
 
   //EDIT
@@ -161,6 +162,7 @@ const MyLocations = ({
           dropdownName=""
           items={countries.map((country) => country.name)}
           defaultFilter={filters.country ? filters.country : ""}
+          defaultValue={""}
           returnItemToParent={handleCountrySelect}
         />
         {/* Meta Filter */}
@@ -168,6 +170,7 @@ const MyLocations = ({
           dropdownName=""
           items={metas.map((meta) => meta.name)}
           defaultFilter={filters.meta ? filters.meta : ""}
+          defaultValue={""}
           returnItemToParent={handleMetaSelect}
         />
       </div>

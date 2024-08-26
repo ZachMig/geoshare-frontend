@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Country, List, LocInfo, Meta } from "../types";
+import { Country, List, LocInfo, Meta, Stringable } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
@@ -40,12 +40,12 @@ const CreateLocation = ({
     name.toLowerCase()
   );
 
-  const handleCountryChange = (selectedCountry: string) => {
-    setLocInfo({ ...locInfo, countryName: selectedCountry });
+  const handleCountryChange = (selectedCountry: Stringable) => {
+    setLocInfo({ ...locInfo, countryName: selectedCountry.toString() });
   };
 
-  const handleMetaChange = (selectedMeta: string) => {
-    setLocInfo({ ...locInfo, meta: selectedMeta });
+  const handleMetaChange = (selectedMeta: Stringable) => {
+    setLocInfo({ ...locInfo, meta: selectedMeta.toString() });
   };
 
   //Add the selected list to be included to lists this location
@@ -149,6 +149,7 @@ const CreateLocation = ({
             dropdownName="Country"
             items={countryNames}
             defaultFilter={""}
+            defaultValue={""}
             returnItemToParent={handleCountryChange}
           />
           {/*Meta*/}
@@ -156,6 +157,7 @@ const CreateLocation = ({
             dropdownName="Meta"
             items={metaNames}
             defaultFilter={""}
+            defaultValue={""}
             returnItemToParent={handleMetaChange}
           />
         </div>
