@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Country, LocInfo, Location, Meta } from "../types";
+import { Country, LocInfo, Location, Meta, Stringable } from "../types";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import "../css/EditModal.css";
@@ -121,12 +121,15 @@ const EditLocation = ({
     setEditIsVisible(false);
   };
 
-  const handleCountryChange = (selectedCountry: string) => {
-    setUpdatedLocInfo({ ...updatedLocInfo, countryName: selectedCountry });
+  const handleCountryChange = (selectedCountry: Stringable) => {
+    setUpdatedLocInfo({
+      ...updatedLocInfo,
+      countryName: selectedCountry.toString(),
+    });
   };
 
-  const handleMetaChange = (selectedMeta: string) => {
-    setUpdatedLocInfo({ ...updatedLocInfo, meta: selectedMeta });
+  const handleMetaChange = (selectedMeta: Stringable) => {
+    setUpdatedLocInfo({ ...updatedLocInfo, meta: selectedMeta.toString() });
   };
 
   return (
@@ -177,14 +180,16 @@ const EditLocation = ({
             <FilteredDropdown
               dropdownName="Country"
               items={countries.map((country) => country.name)}
-              defaultFilter={location.countryName}
+              defaultFilter={""}
+              defaultValue={location.countryName}
               returnItemToParent={handleCountryChange}
             />
             {/* Meta */}
             <FilteredDropdown
               dropdownName="Meta"
               items={metas.map((meta) => meta.name)}
-              defaultFilter={location.meta}
+              defaultFilter={""}
+              defaultValue={location.meta}
               returnItemToParent={handleMetaChange}
             />
           </div>

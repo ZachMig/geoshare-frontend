@@ -18,4 +18,10 @@ add field to location table to track how many lists it belongs to, so we can eas
 
 figure out a good way to do sorting of displayed lists/locations? date?
 
+make emails unique in db?
+
+make sure correct formatting of urls in location create and edit - done in java so far probably do in frontend also?
+
+edit location not receiving correct default values for dropdown country and meta
+
 turn off strict mode when project finished

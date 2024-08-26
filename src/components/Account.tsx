@@ -124,7 +124,7 @@ const Account = () => {
               required
             />
             <button className="btn btn-primary mt-1" type="submit">
-              Submit
+              Set New Email
             </button>
           </form>
         </div>
@@ -149,7 +149,7 @@ const Account = () => {
               required
             />
             <button className="btn btn-primary mt-1" type="submit">
-              Submit
+              Set New Password
             </button>
           </form>
         </div>
