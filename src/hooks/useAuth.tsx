@@ -5,8 +5,8 @@ import axios from "axios";
 interface AuthContext {
   user: User;
   isLoggedIn: boolean;
-  login: (a: string, b: string) => void;
-  createAccount: (a: string, b: string) => void;
+  login: (a: string, b: string) => Promise<boolean>;
+  createAccount: (a: string, b: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -20,8 +20,8 @@ const defaultUser: User = {
 const defaultAuthContext: AuthContext = {
   user: defaultUser,
   isLoggedIn: false,
-  login: () => {},
-  createAccount: () => {},
+  login: async () => false,
+  createAccount: async () => false,
   logout: () => {},
 };
 
@@ -46,7 +46,10 @@ function useProvideAuth() {
   }
 
   //LOGIN
-  const login = async (username: string, password: string) => {
+  const login = async (
+    username: string,
+    password: string
+  ): Promise<boolean> => {
     logout();
 
     const url = "http://localhost:8080/api/auth/gettoken";
@@ -70,13 +73,18 @@ function useProvideAuth() {
       setIsLoggedIn(true);
 
       console.log("User logged in successfully.");
+      return true;
     } catch (e) {
       console.error(`Error attempting to login. ${e}`);
+      return false;
     }
   };
 
   //CREATE ACCOUNT
-  async function createAccount(username: string, password: string) {
+  async function createAccount(
+    username: string,
+    password: string
+  ): Promise<boolean> {
     const url = "http://localhost:8080/api/users/create";
 
     const requestBody = {
@@ -92,8 +100,10 @@ function useProvideAuth() {
       });
 
       console.log("User created successfully.");
+      return true;
     } catch (e) {
       console.error(`Error attempting to create user. ${e}`);
+      return false;
     }
   }
 
