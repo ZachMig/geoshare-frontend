@@ -21,6 +21,8 @@ figure out a good way to do sorting of displayed lists/locations? date?
 make emails unique in db?
 
 make sure correct formatting of urls in location create and edit - done in java so far probably do in frontend also?
+Include all types of urls such as https://maps.app.goo.gl/fgLNnL6CYicwAqAw6
+or https://www.google.fr/maps/@35.9546321,36.1169284 ... 
 
 edit location not receiving correct default values for dropdown country and meta
 

@@ -1,26 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import "../css/FilteredItems.css";
-import { Stringable } from "../types";
 
-interface FilteredDropdownProps {
+interface FilteredDropdownProps<T> {
   dropdownName: string;
-  items: Stringable[];
+  items: T[];
   defaultFilter: string;
   defaultValue: string;
-  returnItemToParent: (item: Stringable) => void;
+  returnItemToParent: (item: T) => void;
 }
 
 /**
  * @param items must be an array of distinct returns of toString()
  *
  */
-const FilteredDropdown = ({
+const FilteredDropdown = <T extends { toString(): string }>({
   dropdownName,
   items,
   defaultFilter,
   defaultValue,
   returnItemToParent,
-}: FilteredDropdownProps) => {
+}: FilteredDropdownProps<T>) => {
   const ulRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
   const [filter, setFilter] = useState(defaultFilter.toString());

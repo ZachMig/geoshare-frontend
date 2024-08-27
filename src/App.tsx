@@ -9,6 +9,8 @@ import Manage from "./components/Manage.tsx";
 import { useAuth } from "./hooks/useAuth.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import Search from "./components/Search.tsx";
+import About from "./components/About.tsx";
+import UserGuide from "./components/UserGuide.tsx";
 
 //COMPONENT
 function App() {
@@ -220,6 +222,8 @@ function App() {
           element={<Search countries={countries} metas={metas} />}
         />
         <Route path="/account" element={<PrivateRoute Child={<Account />} />} />
+        <Route path="/userguide" element={<UserGuide />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </>
   );

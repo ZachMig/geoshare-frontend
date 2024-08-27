@@ -87,18 +87,20 @@ const Account = () => {
   };
 
   return (
-    <div className="col-4 mt-5">
+    <div className="col-4 mt-5 ms-4">
       <h1>My Account</h1>
       {/* Current Account Details */}
       <div className="row">
-        <span>Username: {auth.user.username}</span>
-        <span>
-          E-Mail Address: {auth.user.email || "E-Mail Address Not Set Yet"}
-        </span>
+        <h4>Username: {auth.user.username}</h4>
+        <h4>
+          E-Mail Address:{" "}
+          {auth.user.email ||
+            "E-Mail Address Not Set Yet - Please Set One In Case You Need to Recover Your Account!"}
+        </h4>
       </div>
       <span>{submitResponse}</span>
       {/* Current Password */}
-      <div className="row mt-3">
+      <div className="row mt-5">
         <h4>Current Password, Required for Any Changes</h4>
         <form>
           <input
@@ -112,7 +114,7 @@ const Account = () => {
       </div>
       {/* New Email */}
       <div>
-        <div className="row mt-3">
+        <div className="row mt-5">
           <h4>Change E-Mail Address</h4>
           <form onSubmit={handleNewEmailSubmit}>
             <input
@@ -129,7 +131,7 @@ const Account = () => {
           </form>
         </div>
         {/* New Password */}
-        <div className="row mt-3">
+        <div className="row mt-5">
           <h4>Change Password</h4>
           <form onSubmit={handleNewPasswordSubmit}>
             <input

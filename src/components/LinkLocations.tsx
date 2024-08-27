@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Country, List, Location, LocationFilter, Meta } from "../types";
+import {
+  Country,
+  List,
+  Location,
+  LocationFilter,
+  Meta,
+  Stringable,
+} from "../types";
 import FilteredDropdown from "./FilteredDropdown";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
@@ -57,20 +64,20 @@ const LinkLocations = ({
     return myLists.slice(1);
   };
 
-  const handleInCountrySelect = (country: string) => {
-    setInFilters({ ...inFilters, country: country });
+  const handleInCountrySelect = (country: Stringable) => {
+    setInFilters({ ...inFilters, country: country.toString() });
   };
 
-  const handleInMetaSelect = (meta: string) => {
-    setInFilters({ ...inFilters, meta: meta });
+  const handleInMetaSelect = (meta: Stringable) => {
+    setInFilters({ ...inFilters, meta: meta.toString() });
   };
 
-  const handleOutCountrySelect = (country: string) => {
-    setOutFilters({ ...outFilters, country: country });
+  const handleOutCountrySelect = (country: Stringable) => {
+    setOutFilters({ ...outFilters, country: country.toString() });
   };
 
-  const handleOutMetaSelect = (meta: string) => {
-    setOutFilters({ ...outFilters, meta: meta });
+  const handleOutMetaSelect = (meta: Stringable) => {
+    setOutFilters({ ...outFilters, meta: meta.toString() });
   };
 
   const toggleLocationToBeLinked = (locationID: string) => {
@@ -233,7 +240,7 @@ const LinkLocations = ({
             <FilteredDropdown
               dropdownName={"Select A List"}
               items={stringedListsForDropdown()} // don't pass in Unlisted list
-              // defaultFilter={listFilter ? listFilter : ""}
+              defaultValue={""}
               defaultFilter={""}
               returnItemToParent={onSelectList}
             />
@@ -245,7 +252,7 @@ const LinkLocations = ({
             onClick={handleSwapSubmit}
             className="btn btn-primary"
           >
-            Submit Changes
+            Unlink and Link
           </button>
         </div>
       </div>
@@ -270,6 +277,7 @@ const LinkLocations = ({
             dropdownName=""
             items={countries.map((country) => country.name)}
             defaultFilter={inFilters.country ? inFilters.country : ""}
+            defaultValue={""}
             returnItemToParent={handleInCountrySelect}
           />
           {/* Meta Filter */}
@@ -277,6 +285,7 @@ const LinkLocations = ({
             dropdownName=""
             items={metas.map((meta) => meta.name)}
             defaultFilter={inFilters.meta ? inFilters.meta : ""}
+            defaultValue={""}
             returnItemToParent={handleInMetaSelect}
           />
         </div>
@@ -299,6 +308,7 @@ const LinkLocations = ({
             dropdownName=""
             items={countries.map((country) => country.name)}
             defaultFilter={outFilters.country ? outFilters.country : ""}
+            defaultValue={""}
             returnItemToParent={handleOutCountrySelect}
           />
           {/* Meta Filter */}
@@ -306,6 +316,7 @@ const LinkLocations = ({
             dropdownName=""
             items={metas.map((meta) => meta.name)}
             defaultFilter={outFilters.meta ? outFilters.meta : ""}
+            defaultValue={""}
             returnItemToParent={handleOutMetaSelect}
           />
         </div>
