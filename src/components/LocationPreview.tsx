@@ -9,6 +9,8 @@ interface LocationPreviewProps {
   location: Location;
 }
 
+//TODO PITCH NOT BEING ENCODED CORRECTLY ON BACKEND MOST LIKELY NEGATIVE VALUE BEING LOST !!!!!
+
 const LocationPreview = ({ location }: LocationPreviewProps) => {
   const auth = useAuth();
   const [preview, setPreview] = useState("");
