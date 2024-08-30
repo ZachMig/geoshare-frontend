@@ -12,18 +12,10 @@ return user data storage to localstorage for cross-tab access, and also remember
 
 in the public search, indicate who owns the searched lists?
 
-BUG? user auth state can persist from last session but new instance of spring app? shouldn't be relevant in prod I think
-
 add field to location table to track how many lists it belongs to, so we can easily check if a location needs to be marked unlisted
 
 figure out a good way to do sorting of displayed lists/locations? date?
 
 make emails unique in db?
-
-make sure correct formatting of urls in location create and edit - done in java so far probably do in frontend also?
-Include all types of urls such as https://maps.app.goo.gl/fgLNnL6CYicwAqAw6
-or https://www.google.fr/maps/@35.9546321,36.1169284 ... 
-
-edit location not receiving correct default values for dropdown country and meta
 
 turn off strict mode when project finished

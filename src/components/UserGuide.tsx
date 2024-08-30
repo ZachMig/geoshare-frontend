@@ -30,19 +30,29 @@ const UserGuide = () => {
           Locations tab provides this functionality.
         </p>
         <p>
-          Under Link or Unlink Locations you can see a text input field which
+          Under Unlink or Link Locations you can see a text input field which
           will open a filterable dropdown with all your lists. Selecting a list
           here will bring up two groups of filterable locations. The left group
           represents all locations that are in the selected list. The right
           group represents all locations that are not in the selected list, i.e.
           all of your other saved locations. Selecting any number of locations
-          and clicking the Link and Unlink Locations button will{" "}
+          and clicking the Unlink and Link button will{" "}
           <b>
             <i>swap the selected locations in and out of the selected list.</i>
           </b>{" "}
           All selected locations that were part of this list will no longer be,
           and all selected locations that were not part of this list, now will
           be.
+        </p>
+        <p>
+          <b>Note: </b> All locations created or updated should have a Google
+          Maps URL which includes data of the following style:
+          "@40.9482919,-74.0712503,3a,80.7y,17.16h,86.25t" which is found right
+          at the beginning e.g.
+          google.com/maps/@40.9482919,-74.0712503,3a,80.7y,17.16h,86.25t/...{" "}
+          <br />
+          If this data is not provided, the visual preview of your location will
+          not be available.
         </p>
       </div>
       <div className="col-4">
