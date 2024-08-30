@@ -9,8 +9,6 @@ interface LocationPreviewProps {
   location: Location;
 }
 
-//TODO PITCH NOT BEING ENCODED CORRECTLY ON BACKEND MOST LIKELY NEGATIVE VALUE BEING LOST !!!!!
-
 const LocationPreview = ({ location }: LocationPreviewProps) => {
   const auth = useAuth();
   const [preview, setPreview] = useState("");
@@ -41,7 +39,7 @@ const LocationPreview = ({ location }: LocationPreviewProps) => {
 
   useEffect(() => {
     fetchPreview().then((url) => setPreview(url));
-  }, []);
+  }, [location.url]);
 
   return (
     <div>
