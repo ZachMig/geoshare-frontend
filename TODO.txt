@@ -1,13 +1,5 @@
 dont forget to:
 
-**********
-move selectedLocation back into wherever the actions where the delete is called because it's deleting the wrong location becasue sync 
-still working on this
-Ok maybe it's fixed just leaving this here so I can try to break it more later
-**********
-
-make popup are u sure to delete location maybe idk
-
 return user data storage to localstorage for cross-tab access, and also remember to clear it on logout() call
 
 in the public search, indicate who owns the searched lists?
@@ -17,5 +9,8 @@ add field to location table to track how many lists it belongs to, so we can eas
 figure out a good way to do sorting of displayed lists/locations? date?
 
 make emails unique in db?
+
+https://www.google.com/maps/@38.8976896,-77.036576,2a,75y,265.14h,68.64t/data=!3m8!1e1!3m6!1szvr4bsLBI2IAAARbX2cRbA!2e0!3e2!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D21.36028055089396%26panoid%3Dzvr4bsLBI2IAAARbX2cRbA%26yaw%3D265.144094393312!7i5656!8i2828?coh=205410&entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D
+this shit not creating 2a?
 
 turn off strict mode when project finished

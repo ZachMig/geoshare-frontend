@@ -16,6 +16,7 @@ import EditLocation from "./EditLocations";
 import FilteredDropdown from "./FilteredDropdown";
 import { Link } from "react-router-dom";
 import ActionIcons from "./ActionIcons";
+import ConfirmDelete from "./ConfirmDelete";
 
 interface MyLocationsProps {
   selectedList: List;
@@ -50,6 +51,7 @@ const MyLocations = ({
   });
 
   const [isEditVisible, setIsEditVisible] = useState(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
 
   const handleCountrySelect = (country: Stringable) => {
     setFilters({ ...filters, country: country.toString() });
@@ -65,9 +67,14 @@ const MyLocations = ({
     //   console.error("Attempted to edit with no selected location.");
     //   return;
     // }
-
-    console.log("Edit clicked for location: " + location.id);
+    onSelectLocation(location as Location);
     setIsEditVisible(true);
+  };
+
+  //Open Modal to Confirm Delete or Not
+  const handleLocationDelete = (location: Actionable) => {
+    onSelectLocation(location as Location);
+    setIsDeleteVisible(true);
   };
 
   //UNLINK
@@ -75,8 +82,8 @@ const MyLocations = ({
     unlinkLocation(location);
   };
 
-  //DELETE
-  const handleLocationDelete = async (location: Actionable) => {
+  //Actually Delete
+  const sendDeleteRequest = async (location: Actionable) => {
     const deleteUrl = "http://localhost:8080/api/locations/delete";
     try {
       const response = await axios.delete(deleteUrl, {
@@ -85,7 +92,6 @@ const MyLocations = ({
       });
       console.log("Delete request ran with no errors. " + response.data);
       fetchLists();
-      onSelectLocation(null); // TODO find a better way to reset locaionPreview here
     } catch (error) {
       console.error("Error deleting location: " + location.id + " - " + error);
     }
@@ -145,6 +151,15 @@ const MyLocations = ({
           setEditIsVisible={setIsEditVisible}
         />
       )}
+      {/* Confirm Delete Modal */}
+      {isDeleteVisible && selectedLocation && (
+        <ConfirmDelete
+          item={selectedLocation}
+          itemName={selectedLocation.description}
+          sendDeleteRequest={sendDeleteRequest}
+          setIsDeleteVisible={setIsDeleteVisible}
+        />
+      )}
       {/* Filters */}
       <div className="row mb-2 d-flex align-items-end">
         {/* Location Name Filter */}
@@ -195,8 +210,8 @@ const MyLocations = ({
               {location.description.length > 80
                 ? location.description.slice(0, 80)
                 : location.description}
-              {/* Action Buttons */}
 
+              {/* Action Buttons */}
               <ActionIcons
                 item={location}
                 showUnlink={selectedList.id != -1}
