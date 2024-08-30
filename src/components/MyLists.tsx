@@ -6,6 +6,7 @@ import ListDescription from "./ListDescription";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import ActionIcons from "./ActionIcons";
+import ConfirmDelete from "./ConfirmDelete";
 
 interface MyListsProps {
   allLists: List[];
@@ -22,6 +23,7 @@ const MyLists = ({
 }: MyListsProps) => {
   const auth = useAuth();
   const [isEditVisible, setIsEditVisible] = useState(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
 
   const handleListEdit = () => {
     if (!selectedList) {
@@ -32,7 +34,7 @@ const MyLists = ({
     console.log("Edit clicked for list: " + selectedList.name);
   };
 
-  const handleListDelete = async (list: Actionable) => {
+  const sendDeleteRequest = async (list: Actionable) => {
     if (!selectedList) {
       console.error("Attempted to delete list with no list selected.");
       return;
@@ -55,6 +57,11 @@ const MyLists = ({
     fetchLists();
   };
 
+  const handleListDelete = (list: Actionable) => {
+    onSelectList(list as List);
+    setIsDeleteVisible(true);
+  };
+
   const handlers: Handlers = {
     handleEdit: handleListEdit,
     handleUnlink: null,
@@ -63,11 +70,21 @@ const MyLists = ({
 
   return (
     <div className="list-holder" style={{ maxHeight: "80vh" }}>
+      {/* Edit List Modal */}
       {isEditVisible && selectedList && (
         <EditList
           list={selectedList}
           fetchLists={fetchLists}
           setIsEditVisible={setIsEditVisible}
+        />
+      )}
+      {/* Delete Confirmation Modal */}
+      {isDeleteVisible && selectedList && (
+        <ConfirmDelete
+          item={selectedList}
+          itemName={selectedList.name}
+          sendDeleteRequest={sendDeleteRequest}
+          setIsDeleteVisible={setIsDeleteVisible}
         />
       )}
       <h4>Lists</h4>
