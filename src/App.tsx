@@ -104,7 +104,7 @@ function App() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/lists/findformatted?uname=${auth.user.username}`,
+        `https://api.geosave.org:8443/api/lists/findformatted?uname=${auth.user.username}`,
         config
       );
 
