@@ -3,7 +3,7 @@ import Account from "./components/Account.tsx";
 import Login from "./components/Login.tsx";
 import My from "./components/My.tsx";
 import { Country, List, Location, Meta } from "./types.ts";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Manage from "./components/Manage.tsx";
 import { useAuth } from "./hooks/useAuth.tsx";
@@ -224,6 +224,7 @@ function App() {
         <Route path="/account" element={<PrivateRoute Child={<Account />} />} />
         <Route path="/userguide" element={<UserGuide />} />
         <Route path="/about" element={<About />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
   );
