@@ -51,7 +51,7 @@ const My = ({
     //   return;
     // }
 
-    const unlinkUrl = `http://localhost:8080/api/lists/unlink?listid=${selectedList.id}`;
+    const unlinkUrl = `https://api.geosave.org:8443/api/lists/unlink?listid=${selectedList.id}`;
 
     //API takes a list of IDs in case of future changes want to unlink many at once
     const requestBody = [location.id];

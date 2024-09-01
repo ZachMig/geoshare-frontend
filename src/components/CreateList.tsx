@@ -36,7 +36,7 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
 
     setSubmitResponse("");
 
-    const url = `http://localhost:8080/api/lists/create`;
+    const url = `https://api.geosave.org:8443/api/lists/create`;
     const config = {
       headers: {
         "Content-Type": "application/json",

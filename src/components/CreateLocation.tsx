@@ -75,7 +75,7 @@ const CreateLocation = ({
 
     setSubmitResponse("");
 
-    const url = `http://localhost:8080/api/locations/create`;
+    const url = `https://api.geosave.org:8443/api/locations/create`;
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ const CreateLocation = ({
 
     locInfo.listIDs = Array.from(listsToAdd) as number[];
 
-    console.log("LocInfo: " + locInfo);
+    // console.log("LocInfo: " + locInfo);
 
     try {
       const response = await axios.post(url, locInfo, config);

@@ -50,9 +50,9 @@ const Search = ({ countries, metas }: SearchProps) => {
     let url = "";
 
     if (searchByUsername) {
-      url = `http://localhost:8080/api/lists/findformatted?uname=${searchParam}`;
+      url = `https://api.geosave.org:8443/api/lists/findformatted?uname=${searchParam}`;
     } else {
-      url = `http://localhost:8080/api/lists/searchlists?includes=${searchParam}`;
+      url = `https://api.geosave.org:8443/api/lists/searchlists?includes=${searchParam}`;
     }
 
     try {

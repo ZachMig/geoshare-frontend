@@ -58,7 +58,7 @@ const EditLocation = ({
     };
   }, []);
 
-  const url = "http://localhost:8080/api/locations/update";
+  const url = "https://api.geosave.org:8443/api/locations/update";
 
   const countryNamesLower = countries.map((country) =>
     country.name.toLowerCase()

@@ -31,7 +31,7 @@ const MyLists = ({
       return;
     }
     setIsEditVisible(true);
-    console.log("Edit clicked for list: " + selectedList.name);
+    // console.log("Edit clicked for list: " + selectedList.name);
   };
 
   const sendDeleteRequest = async (list: Actionable) => {
@@ -39,9 +39,9 @@ const MyLists = ({
       console.error("Attempted to delete list with no list selected.");
       return;
     }
-    console.log("Delete clicked for list: " + list.id);
+    // console.log("Delete clicked for list: " + list.id);
 
-    const url = `http://localhost:8080/api/lists/delete?listid=${list.id}`;
+    const url = `https://api.geosave.org:8443/api/lists/delete?listid=${list.id}`;
 
     const config = {
       headers: { Authorization: "Bearer " + auth.user.jwt },

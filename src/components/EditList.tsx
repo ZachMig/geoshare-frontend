@@ -76,7 +76,7 @@ const EditList = ({
       return;
     }
 
-    const url = "http://localhost:8080/api/lists/update";
+    const url = "https://api.geosave.org:8443/api/lists/update";
     const config = {
       headers: {
         "Content-Type": "application/json",

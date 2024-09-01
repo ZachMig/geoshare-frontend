@@ -16,7 +16,7 @@ const LocationPreview = ({ location }: LocationPreviewProps) => {
   // const url = `https://www.${location.url}`;
 
   const fetchPreview = async (): Promise<string> => {
-    const url = `http://localhost:8080/api/locations/preview?id=${location.id}`;
+    const url = `https://api.geosave.org:8443/api/locations/preview?id=${location.id}`;
     const config: AxiosRequestConfig = {
       headers: {
         Authorization: "Bearer " + auth.user.jwt,

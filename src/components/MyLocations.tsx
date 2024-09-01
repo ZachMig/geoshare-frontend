@@ -84,7 +84,7 @@ const MyLocations = ({
 
   //Actually Delete
   const sendDeleteRequest = async (location: Actionable) => {
-    const deleteUrl = "http://localhost:8080/api/locations/delete";
+    const deleteUrl = "https://api.geosave.org:8443/api/locations/delete";
     try {
       const response = await axios.delete(deleteUrl, {
         data: [location.id],

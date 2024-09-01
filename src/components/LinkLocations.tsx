@@ -185,7 +185,7 @@ const LinkLocations = ({
 
   //SUBMIT LINK/UNLINK API CALLS
   const handleSwapSubmit = async () => {
-    console.log("Submit clicked!");
+    // console.log("Submit clicked!");
     if (!selectedList) {
       console.error("Attempted to swap with no selected list.");
       return;
@@ -200,7 +200,7 @@ const LinkLocations = ({
 
     //Link locations if any have been selected
     if (locationsToLink.size > 0) {
-      const url = `http://localhost:8080/api/lists/add?listid=${selectedList.id}`;
+      const url = `https://api.geosave.org:8443/api/lists/add?listid=${selectedList.id}`;
 
       try {
         const response = await axios.put(url, [...locationsToLink], config);
@@ -213,7 +213,7 @@ const LinkLocations = ({
 
     //Unlink locations if any have been selected
     if (locationsToUnlink.size > 0) {
-      const url = `http://localhost:8080/api/lists/unlink?listid=${selectedList.id}`;
+      const url = `https://api.geosave.org:8443/api/lists/unlink?listid=${selectedList.id}`;
 
       try {
         const response = await axios.put(url, [...locationsToUnlink], config);

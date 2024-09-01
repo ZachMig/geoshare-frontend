@@ -52,7 +52,7 @@ function useProvideAuth() {
   ): Promise<boolean> => {
     logout();
 
-    const url = "http://localhost:8080/api/auth/gettoken";
+    const url = "https://api.geosave.org:8443/api/auth/gettoken";
 
     const requestBody = {
       username,
@@ -85,7 +85,7 @@ function useProvideAuth() {
     username: string,
     password: string
   ): Promise<boolean> {
-    const url = "http://localhost:8080/api/users/create";
+    const url = "https://api.geosave.org:8443/api/users/create";
 
     const requestBody = {
       username,

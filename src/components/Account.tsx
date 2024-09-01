@@ -22,7 +22,7 @@ const Account = () => {
       setSubmitResponse("Must Include Current Password!");
     }
 
-    const url = "http://localhost:8080/api/users/setemail";
+    const url = "https://api.geosave.org:8443/api/users/setemail";
     const requestBody = {
       password: curPassword,
       newEmail: newEmail,
@@ -52,7 +52,7 @@ const Account = () => {
       setSubmitResponse("Must Include Current Password!");
     }
 
-    const url = "http://localhost:8080/api/users/setpassword";
+    const url = "https://api.geosave.org:8443/api/users/setpassword";
     const requestBody = {
       password: curPassword,
       newPassword: newPassword,

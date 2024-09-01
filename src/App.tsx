@@ -28,10 +28,10 @@ function App() {
 
   //Set Default Selected List
   const setDefaults = () => {
-    console.log("Running default list setter.");
+    // console.log("Running default list setter.");
     //Don't run if lists are not loaded yet
     if (!myLists) {
-      console.log("no lists yet");
+      // console.log("no lists yet");
       return;
     }
 
@@ -95,7 +95,7 @@ function App() {
 
   //FETCH LISTS
   const fetchLists = async () => {
-    console.log("Fetching fresh lists.");
+    // console.log("Fetching fresh lists.");
     const config = {
       headers: {
         Authorization: "Bearer " + auth.user.jwt,
@@ -135,13 +135,13 @@ function App() {
   };
 
   const onSelectLocation = (location: Location | null) => {
-    console.log("setting location: " + location?.description);
+    // console.log("setting location: " + location?.description);
     setSelectedLocation(location);
   };
 
   const fetchCountriesAndMetas = async () => {
-    const countryUrl = "http://localhost:8080/api/countries/findall";
-    const metaUrl = "http://localhost:8080/api/metas/findall";
+    const countryUrl = "https://api.geosave.org:8443/api/countries/findall";
+    const metaUrl = "https://api.geosave.org:8443/api/metas/findall";
 
     try {
       const [countriesResponse, metasResponse] = await Promise.all([
@@ -158,7 +158,7 @@ function App() {
 
   //Whenever user changes wipe all data and reload
   useEffect(() => {
-    console.log("USER CHANGING");
+    // console.log("USER CHANGING");
     setMyLists(null);
     setSelectedLocations(null);
     setSelectedLocation(null);
