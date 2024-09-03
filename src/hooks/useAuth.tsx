@@ -40,6 +40,7 @@ function useProvideAuth() {
   const [user, setUser] = useState<User>(defaultUser);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  //LOGOUT
   async function logout() {
     setUser(defaultUser);
     setIsLoggedIn(false);

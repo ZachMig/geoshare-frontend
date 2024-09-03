@@ -8,8 +8,8 @@ import { ProvideAuth } from "./hooks/useAuth.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-    <Navbar />
     <ProvideAuth>
+      <Navbar />
       <App />
     </ProvideAuth>
   </BrowserRouter>
