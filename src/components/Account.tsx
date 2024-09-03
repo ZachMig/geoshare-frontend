@@ -16,10 +16,12 @@ const Account = () => {
     },
   };
 
+  //CHANGE EMAIL
   const handleNewEmailSubmit = async (e: any) => {
     e.preventDefault();
     if (!curPassword) {
       setSubmitResponse("Must Include Current Password!");
+      return;
     }
 
     const url = "https://api.geosave.org:8443/api/users/setemail";
@@ -34,12 +36,15 @@ const Account = () => {
         "E-mail change request handled successfully. " + response.data
       );
       setSubmitResponse("E-mail change request handled successfully.");
+      setCurPassword("");
+      setNewEmail("");
     } catch (error) {
       console.error("Error handling E-mail change request. " + error);
       setSubmitResponse("Error handling E-mail change request.");
     }
   };
 
+  //CHANGE PASSWORD
   const handleNewPasswordSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -50,6 +55,7 @@ const Account = () => {
 
     if (!curPassword) {
       setSubmitResponse("Must Include Current Password!");
+      return;
     }
 
     const url = "https://api.geosave.org:8443/api/users/setpassword";
@@ -64,6 +70,9 @@ const Account = () => {
         "Password change request handled successfully. " + response.data
       );
       setSubmitResponse("Password change request handled successfully.");
+      setCurPassword("");
+      setNewPassword("");
+      setNewPasswordCompare("");
     } catch (error) {
       console.error("Error handling password change request. " + error);
       setSubmitResponse("Error handling password change request.");
