@@ -103,12 +103,14 @@ const EditLocation = ({
       setSubmitResponse("Update location response: " + response.data);
 
       //Reset info to update
-      setUpdatedLocInfo({
-        ...updatedLocInfo,
-        url: "",
-        description: "",
-        countryName: "",
-        meta: "",
+      setUpdatedLocInfo((prev) => {
+        return {
+          ...prev,
+          url: "",
+          description: "",
+          countryName: "",
+          meta: "",
+        };
       });
       closeEditWindow();
       //Refresh lists
@@ -158,7 +160,9 @@ const EditLocation = ({
               placeholder="google.com/maps/~"
               value={updatedLocInfo.url}
               onChange={(e) =>
-                setUpdatedLocInfo({ ...updatedLocInfo, url: e.target.value })
+                setUpdatedLocInfo((prev) => {
+                  return { ...prev, url: e.target.value };
+                })
               }
               required
             />
@@ -175,9 +179,11 @@ const EditLocation = ({
               placeholder="Typical east nusa round..."
               value={updatedLocInfo.description}
               onChange={(e) =>
-                setUpdatedLocInfo({
-                  ...updatedLocInfo,
-                  description: e.target.value,
+                setUpdatedLocInfo((prev) => {
+                  return {
+                    ...prev,
+                    description: e.target.value,
+                  };
                 })
               }
               required

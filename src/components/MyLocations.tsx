@@ -175,7 +175,11 @@ const MyLocations = ({
             type="text"
             placeholder="Name"
             value={filters.name ? filters.name : filters.name} //Populate with filter if it exists, avoids some edge case bugs
-            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+            onChange={(e) =>
+              setFilters((prev) => {
+                return { ...prev, name: e.target.value };
+              })
+            }
           />
         </div>
         {/* Country Filter */}
