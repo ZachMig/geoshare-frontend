@@ -34,8 +34,9 @@ const ListDescription = ({ list }: ListDescriptionProps) => {
 
   return (
     <div
-      onMouseEnter={() => setIsDescriptionVisible(true)}
+      onClick={() => setIsDescriptionVisible(true)}
       onMouseLeave={() => setIsDescriptionVisible(false)}
+      style={{ cursor: "pointer" }}
     >
       <span> {listDescriptionStub()}</span>
       {isDescriptionVisible && (
