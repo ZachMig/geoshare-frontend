@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { List } from "../types";
+import "../css/ListDescription.css";
 
 interface ListDescriptionProps {
   list: List | null;
@@ -35,13 +36,16 @@ const ListDescription = ({ list }: ListDescriptionProps) => {
     <div
       onMouseEnter={() => setIsDescriptionVisible(true)}
       onMouseLeave={() => setIsDescriptionVisible(false)}
-      style={{ overflowY: "auto", maxHeight: "300px" }}
-      className="my-2"
     >
-      <span>
-        {listDescriptionStub()}
-        {listDescriptionFull()}
-      </span>
+      <span> {listDescriptionStub()}</span>
+      {isDescriptionVisible && (
+        <div
+          className="ld-overlay mt-5 py-0"
+          style={{ overflowY: "auto", maxHeight: "500px" }}
+        >
+          <span>{listDescriptionFull()}</span>
+        </div>
+      )}
     </div>
   );
 };
