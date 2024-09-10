@@ -144,13 +144,25 @@ function App() {
     const metaUrl = "https://api.geosave.org:8443/api/metas/findall";
 
     try {
-      const [countriesResponse, metasResponse] = await Promise.all([
-        axios.get(countryUrl),
-        axios.get(metaUrl),
+      const [c, m]: [Country[], Meta[]] = await Promise.all([
+        (await axios.get(countryUrl)).data,
+        (await axios.get(metaUrl)).data,
       ]);
 
-      setCountries(countriesResponse.data);
-      setMetas(metasResponse.data);
+      c.forEach((country) => {
+        country.toString = function () {
+          return this.name;
+        };
+      });
+
+      m.forEach((meta) => {
+        meta.toString = function () {
+          return this.name;
+        };
+      });
+
+      setCountries(c);
+      setMetas(m);
     } catch (error) {
       console.error("Error initializing countries/meta fetch. " + error);
     }

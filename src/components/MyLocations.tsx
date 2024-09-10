@@ -54,19 +54,25 @@ const MyLocations = ({
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
 
   const handleCountrySelect = (country: Stringable) => {
-    setFilters({ ...filters, country: country.toString() });
+    setFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        country: country.toString(),
+      };
+    });
   };
 
   const handleMetaSelect = (meta: Stringable) => {
-    setFilters({ ...filters, meta: meta.toString() });
+    setFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        meta: meta.toString(),
+      };
+    });
   };
 
   //EDIT
   const handleLocationEdit = (location: Actionable) => {
-    // if (!selectedLocation) {
-    //   console.error("Attempted to edit with no selected location.");
-    //   return;
-    // }
     onSelectLocation(location as Location);
     setIsEditVisible(true);
   };
@@ -175,17 +181,17 @@ const MyLocations = ({
         {/* Country Filter */}
         <FilteredDropdown
           dropdownName=""
-          items={countries.map((country) => country.name)}
+          items={countries}
           defaultFilter={filters.country ? filters.country : ""}
-          defaultValue={""}
+          defaultValue={filters.country ? filters.country : ""}
           returnItemToParent={handleCountrySelect}
         />
         {/* Meta Filter */}
         <FilteredDropdown
           dropdownName=""
-          items={metas.map((meta) => meta.name)}
+          items={metas}
           defaultFilter={filters.meta ? filters.meta : ""}
-          defaultValue={""}
+          defaultValue={filters.meta ? filters.meta : ""}
           returnItemToParent={handleMetaSelect}
         />
       </div>

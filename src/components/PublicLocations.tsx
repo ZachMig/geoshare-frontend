@@ -35,11 +35,21 @@ const PublicLocations = ({
   });
 
   const handleCountrySelect = (country: Stringable) => {
-    setFilters({ ...filters, country: country.toString() });
+    setFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        country: country.toString(),
+      };
+    });
   };
 
   const handleMetaSelect = (meta: Stringable) => {
-    setFilters({ ...filters, meta: meta.toString() });
+    setFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        meta: meta.toString(),
+      };
+    });
   };
 
   /**
@@ -85,14 +95,21 @@ const PublicLocations = ({
             type="text"
             placeholder="Name"
             value={filters.name}
-            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+            onChange={(e) =>
+              setFilters((prevFilters) => {
+                return {
+                  ...prevFilters,
+                  name: e.target.value,
+                };
+              })
+            }
           />
         </div>
 
         {/* Country Filter */}
         <FilteredDropdown
           dropdownName=""
-          items={countries.map((country) => country.name)}
+          items={countries}
           defaultFilter={filters.country ? filters.country : ""}
           defaultValue={""}
           returnItemToParent={handleCountrySelect}
@@ -101,7 +118,7 @@ const PublicLocations = ({
         {/* Meta Filter */}
         <FilteredDropdown
           dropdownName=""
-          items={metas.map((meta) => meta.name)}
+          items={metas}
           defaultFilter={filters.meta ? filters.meta : ""}
           defaultValue={""}
           returnItemToParent={handleMetaSelect}

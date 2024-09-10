@@ -66,6 +66,7 @@ const EditLocation = ({
   const metaNamesLower = metas.map((meta) => meta.name.toLowerCase());
 
   useEffect(() => {
+    console.log("Setting up updatedLocInfo");
     setUpdatedLocInfo({
       id: location.id.toString(),
       url: location.url,
@@ -122,14 +123,21 @@ const EditLocation = ({
   };
 
   const handleCountryChange = (selectedCountry: Stringable) => {
-    setUpdatedLocInfo({
-      ...updatedLocInfo,
-      countryName: selectedCountry.toString(),
+    setUpdatedLocInfo((prevLocInfo) => {
+      return {
+        ...prevLocInfo,
+        countryName: selectedCountry.toString(),
+      };
     });
   };
 
   const handleMetaChange = (selectedMeta: Stringable) => {
-    setUpdatedLocInfo({ ...updatedLocInfo, meta: selectedMeta.toString() });
+    setUpdatedLocInfo((prevLocInfo) => {
+      return {
+        ...prevLocInfo,
+        meta: selectedMeta.toString(),
+      };
+    });
   };
 
   return (
@@ -179,7 +187,7 @@ const EditLocation = ({
           <div className="row mt-2">
             <FilteredDropdown
               dropdownName="Country"
-              items={countries.map((country) => country.name)}
+              items={countries}
               defaultFilter={""}
               defaultValue={location.countryName}
               returnItemToParent={handleCountryChange}
@@ -187,7 +195,7 @@ const EditLocation = ({
             {/* Meta */}
             <FilteredDropdown
               dropdownName="Meta"
-              items={metas.map((meta) => meta.name)}
+              items={metas}
               defaultFilter={""}
               defaultValue={location.meta}
               returnItemToParent={handleMetaChange}
