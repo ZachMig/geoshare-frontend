@@ -51,9 +51,9 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
 
       //Reset all input fields
       setListInfo({
-        ...listInfo,
         description: "",
         name: "",
+        userID: auth.user.id,
       });
       //Refresh lists in application storage
       fetchLists();
@@ -79,7 +79,11 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
             maxLength={255}
             placeholder="Iconic Mountain Ranges..."
             value={listInfo.name}
-            onChange={(e) => setListInfo({ ...listInfo, name: e.target.value })}
+            onChange={(e) =>
+              setListInfo((prevListInfo) => {
+                return { ...prevListInfo, name: e.target.value };
+              })
+            }
             required
           />
         </div>
@@ -95,7 +99,9 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
             placeholder="Locations that can be identified by mountains in view..."
             value={listInfo.description}
             onChange={(e) =>
-              setListInfo({ ...listInfo, description: e.target.value })
+              setListInfo((prevListInfo) => {
+                return { ...prevListInfo, description: e.target.value };
+              })
             }
             required
           />
