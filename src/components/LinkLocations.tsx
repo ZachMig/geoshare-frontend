@@ -286,7 +286,9 @@ const LinkLocations = ({
               placeholder="Name"
               value={inFilters.name ? inFilters.name : inFilters.name} //Populate with filter if it exists, avoids some edge case bugs
               onChange={(e) =>
-                setInFilters({ ...inFilters, name: e.target.value })
+                setInFilters((prev) => {
+                  return { ...prev, name: e.target.value };
+                })
               }
             />
           </div>
@@ -317,7 +319,9 @@ const LinkLocations = ({
               placeholder="Name"
               value={outFilters.name ? outFilters.name : outFilters.name} //Populate with filter if it exists, avoids some edge case bugs
               onChange={(e) =>
-                setOutFilters({ ...outFilters, name: e.target.value })
+                setOutFilters((prev) => {
+                  return { ...prev, name: e.target.value };
+                })
               }
             />
           </div>

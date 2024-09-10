@@ -95,10 +95,12 @@ const CreateLocation = ({
       setSubmitResponse("Create location response: " + response.data);
 
       //Reset some input fields
-      setLocInfo({
-        ...locInfo,
-        url: "",
-        description: "",
+      setLocInfo((prev) => {
+        return {
+          ...prev,
+          url: "",
+          description: "",
+        };
       });
       setListsToAdd(new Set());
       fetchLists();

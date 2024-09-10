@@ -54,7 +54,6 @@ const EditList = ({
 
   useEffect(() => {
     setUpdatedListInfo({
-      ...updatedListInfo,
       id: list.id.toString(),
       name: list.name,
       description: list.description,
@@ -90,7 +89,7 @@ const EditList = ({
       console.log("List update request ran without error.");
 
       setUpdatedListInfo({
-        ...updatedListInfo,
+        id: list.id.toString(),
         name: "",
         description: "",
       });
@@ -122,7 +121,9 @@ const EditList = ({
               placeholder="Really cool list"
               value={updatedListInfo.name}
               onChange={(e) =>
-                setUpdatedListInfo({ ...updatedListInfo, name: e.target.value })
+                setUpdatedListInfo((prev) => {
+                  return { ...prev, name: e.target.value };
+                })
               }
               required
             />
@@ -139,9 +140,11 @@ const EditList = ({
               placeholder="Really cool list description"
               value={updatedListInfo.description}
               onChange={(e) =>
-                setUpdatedListInfo({
-                  ...updatedListInfo,
-                  description: e.target.value,
+                setUpdatedListInfo((prev) => {
+                  return {
+                    ...prev,
+                    description: e.target.value,
+                  };
                 })
               }
               required
