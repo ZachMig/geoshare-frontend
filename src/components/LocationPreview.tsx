@@ -1,5 +1,4 @@
 import { Location } from "../types.ts";
-// import * as testOne from "../assets/sv_test_one.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios, { AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
@@ -12,8 +11,6 @@ interface LocationPreviewProps {
 const LocationPreview = ({ location }: LocationPreviewProps) => {
   const auth = useAuth();
   const [preview, setPreview] = useState("");
-  // const testOneImg = testOne.default;
-  // const url = `https://www.${location.url}`;
 
   const fetchPreview = async (): Promise<string> => {
     const url = `https://api.geosave.org:8443/api/locations/preview?id=${location.id}`;
@@ -43,16 +40,21 @@ const LocationPreview = ({ location }: LocationPreviewProps) => {
 
   return (
     <div>
-      <div className="row">
-        <p className="col-5">
-          <a href={location.url} target="_blank" rel="noopener noreferrer">
-            {location.description}
-          </a>
+      <div className="row my-4">
+        <p style={{ fontSize: "20px" }} className="col-6">
+          Country: {location.countryName}
         </p>
-        <p className="col-3">Country: {location.countryName}</p>
-        <p className="col-2">Meta: {location.meta}</p>
+        <p style={{ fontSize: "20px" }} className="col-6">
+          Meta: {location.meta}
+        </p>
       </div>
-      {preview && <img sizes="640x640" src={preview}></img>}
+      <div className="row">
+        {preview && (
+          <a href={location.url} target="_blank">
+            <img sizes="640x640" src={preview}></img>
+          </a>
+        )}
+      </div>
     </div>
   );
 };

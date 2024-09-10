@@ -46,11 +46,6 @@ const My = ({
       return;
     }
 
-    // if (!selectedLocation) {
-    //   console.error("Attempted to unlink with no selected location.");
-    //   return;
-    // }
-
     const unlinkUrl = `https://api.geosave.org:8443/api/lists/unlink?listid=${selectedList.id}`;
 
     //API takes a list of IDs in case of future changes want to unlink many at once
@@ -85,11 +80,6 @@ const My = ({
 
   //TSX
   return (
-    //Setup routing to <Manage> or other in case of user has no lists yet
-    // {if (noLists) {
-    //   return
-    // }
-
     <div className="container-fluid mt-5 h-100">
       <div className="row">
         <div className="col" style={{ maxWidth: "30vw" }}>

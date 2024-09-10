@@ -92,8 +92,8 @@ const Search = ({ countries, metas }: SearchProps) => {
   };
 
   return (
-    <div className="container-fluid mt-5 h-100">
-      <div className="row ">
+    <div className="container-fluid mt-5 h-95" style={{ position: "absolute" }}>
+      <div className="row">
         <div className="col" style={{ maxWidth: "30vw" }}>
           {/* Search by Username or List Name */}
           <div className="row mt-3">
@@ -125,8 +125,8 @@ const Search = ({ countries, metas }: SearchProps) => {
           )}
         </div>
         {/* Locations */}
-        <div className="col" style={{ minHeight: "300px" }}>
-          {selectedLocations && metas && countries && (
+        <div className="col" style={{ maxWidth: "30vw" }}>
+          {selectedList && selectedLocations && metas && countries && (
             <PublicLocations
               locations={selectedLocations}
               selectedLocation={selectedLocation}
@@ -137,7 +137,7 @@ const Search = ({ countries, metas }: SearchProps) => {
           )}
         </div>
         {/* Location Preview */}
-        <div className="col">
+        <div className="col" style={{ maxWidth: "40vw" }}>
           {selectedLocation && <LocationPreview location={selectedLocation} />}
         </div>
       </div>

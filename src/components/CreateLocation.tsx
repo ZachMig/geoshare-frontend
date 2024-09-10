@@ -147,7 +147,7 @@ const CreateLocation = ({
         <div className="row mt-2 mx-auto">
           <FilteredDropdown
             dropdownName="Country"
-            items={countryNames}
+            items={countries}
             defaultFilter={""}
             defaultValue={""}
             returnItemToParent={handleCountryChange}
@@ -155,7 +155,7 @@ const CreateLocation = ({
           {/*Meta*/}
           <FilteredDropdown
             dropdownName="Meta"
-            items={metaNames}
+            items={metas}
             defaultFilter={""}
             defaultValue={""}
             returnItemToParent={handleMetaChange}

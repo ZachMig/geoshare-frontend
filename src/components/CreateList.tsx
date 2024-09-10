@@ -57,7 +57,7 @@ const CreateList = ({ fetchLists }: CreateListProps) => {
       });
       //Refresh lists in application storage
       fetchLists();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating list: " + error);
       setSubmitResponse("Error creating list: " + error);
     }

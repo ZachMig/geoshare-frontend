@@ -1,7 +1,5 @@
 dont forget to:
 
-return user data storage to localstorage for cross-tab access, and also remember to clear it on logout() call
-
 in the public search, indicate who owns the searched lists?
 
 add field to location table to track how many lists it belongs to, so we can easily check if a location needs to be marked unlisted
@@ -10,7 +8,8 @@ figure out a good way to do sorting of displayed lists/locations? date?
 
 make emails unique in db?
 
-https://www.google.com/maps/@38.8976896,-77.036576,2a,75y,265.14h,68.64t/data=!3m8!1e1!3m6!1szvr4bsLBI2IAAARbX2cRbA!2e0!3e2!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D21.36028055089396%26panoid%3Dzvr4bsLBI2IAAARbX2cRbA%26yaw%3D265.144094393312!7i5656!8i2828?coh=205410&entry=ttu&g_ep=EgoyMDI0MDgyOC4wIKXMDSoASAFQAw%3D%3D
-this shit not creating 2a?
+Make list description a popout or fade in instead of jarring appear in your face
 
-turn off strict mode when project finished
+arrow key nav is still bad since it goes out of range anyway (Fixed?)
+
+**Can now drop the unique constraint in db for list.user_id + list.name 

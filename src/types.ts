@@ -42,11 +42,13 @@ export interface ListInfo {
 export interface Meta extends Stringable {
   id: number;
   name: string;
+  toString(): string;
 }
 
 export interface Country extends Stringable {
   id: number;
   name: string;
+  toString(): string;
 }
 
 export interface User {

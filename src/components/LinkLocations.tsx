@@ -46,8 +46,6 @@ const LinkLocations = ({
 
   const onSelectList = (list: List) => {
     setSelectedList(list);
-    // Should probably reset all locations here and treat it as a fresh start
-    // probably with a useEffect that sets locations
   };
 
   //Implement toString() on each list so we can use in dropdown and remove unlisted list
@@ -65,19 +63,39 @@ const LinkLocations = ({
   };
 
   const handleInCountrySelect = (country: Stringable) => {
-    setInFilters({ ...inFilters, country: country.toString() });
+    setInFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        country: country.toString(),
+      };
+    });
   };
 
   const handleInMetaSelect = (meta: Stringable) => {
-    setInFilters({ ...inFilters, meta: meta.toString() });
+    setInFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        meta: meta.toString(),
+      };
+    });
   };
 
   const handleOutCountrySelect = (country: Stringable) => {
-    setOutFilters({ ...outFilters, country: country.toString() });
+    setOutFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        country: country.toString(),
+      };
+    });
   };
 
   const handleOutMetaSelect = (meta: Stringable) => {
-    setOutFilters({ ...outFilters, meta: meta.toString() });
+    setOutFilters((prevFilters) => {
+      return {
+        ...prevFilters,
+        meta: meta.toString(),
+      };
+    });
   };
 
   const toggleLocationToBeLinked = (locationID: string) => {
@@ -275,7 +293,7 @@ const LinkLocations = ({
           {/* Country Filter */}
           <FilteredDropdown
             dropdownName=""
-            items={countries.map((country) => country.name)}
+            items={countries}
             defaultFilter={inFilters.country ? inFilters.country : ""}
             defaultValue={""}
             returnItemToParent={handleInCountrySelect}
@@ -283,7 +301,7 @@ const LinkLocations = ({
           {/* Meta Filter */}
           <FilteredDropdown
             dropdownName=""
-            items={metas.map((meta) => meta.name)}
+            items={metas}
             defaultFilter={inFilters.meta ? inFilters.meta : ""}
             defaultValue={""}
             returnItemToParent={handleInMetaSelect}
@@ -306,7 +324,7 @@ const LinkLocations = ({
           {/* Country Filter */}
           <FilteredDropdown
             dropdownName=""
-            items={countries.map((country) => country.name)}
+            items={countries}
             defaultFilter={outFilters.country ? outFilters.country : ""}
             defaultValue={""}
             returnItemToParent={handleOutCountrySelect}
@@ -314,7 +332,7 @@ const LinkLocations = ({
           {/* Meta Filter */}
           <FilteredDropdown
             dropdownName=""
-            items={metas.map((meta) => meta.name)}
+            items={metas}
             defaultFilter={outFilters.meta ? outFilters.meta : ""}
             defaultValue={""}
             returnItemToParent={handleOutMetaSelect}
