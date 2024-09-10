@@ -41,11 +41,15 @@ const CreateLocation = ({
   );
 
   const handleCountryChange = (selectedCountry: Stringable) => {
-    setLocInfo({ ...locInfo, countryName: selectedCountry.toString() });
+    setLocInfo((prevLocInfo) => {
+      return { ...prevLocInfo, countryName: selectedCountry.toString() };
+    });
   };
 
   const handleMetaChange = (selectedMeta: Stringable) => {
-    setLocInfo({ ...locInfo, meta: selectedMeta.toString() });
+    setLocInfo((prevLocInfo) => {
+      return { ...prevLocInfo, meta: selectedMeta.toString() };
+    });
   };
 
   //Add the selected list to be included to lists this location
@@ -85,8 +89,6 @@ const CreateLocation = ({
 
     locInfo.listIDs = Array.from(listsToAdd) as number[];
 
-    // console.log("LocInfo: " + locInfo);
-
     try {
       const response = await axios.post(url, locInfo, config);
       console.log("Create location response: " + response.data);
@@ -122,7 +124,11 @@ const CreateLocation = ({
             id="url"
             placeholder="google.com/maps/~"
             value={locInfo.url}
-            onChange={(e) => setLocInfo({ ...locInfo, url: e.target.value })}
+            onChange={(e) =>
+              setLocInfo((prevLocInfo) => {
+                return { ...prevLocInfo, url: e.target.value };
+              })
+            }
             required
           />
         </div>
@@ -138,7 +144,9 @@ const CreateLocation = ({
             placeholder="Typical east nusa round..."
             value={locInfo.description}
             onChange={(e) =>
-              setLocInfo({ ...locInfo, description: e.target.value })
+              setLocInfo((prevLocInfo) => {
+                return { ...prevLocInfo, description: e.target.value };
+              })
             }
             required
           />
